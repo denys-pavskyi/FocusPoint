@@ -26,4 +26,19 @@ public class User
 
     //Relationship with TaskItem many(TaskItem) - to - one(User)
     public ICollection<TaskItem> Tasks { get; set; } = new List<TaskItem>();
+
+
+    //Relationship with MainNote many(MainNote) - to - one(User)
+    public ICollection<MainNote> MainNotes { get; set; } = new List<MainNote>();
+
+
+    //Relationship with WorkSession many(WorkSession) - to - one(User)
+    public ICollection<WorkSession> WorkSessions { get; set; } = new List<WorkSession>();
+
+    //Relationship with WorkStatistic many(WorkStatistic) - to - one(User)
+    public ICollection<WorkStatistic> WorkStatistics { get; set; } = new List<WorkStatistic>();
+
+
+    //Relationship with SavedNote many(SavedNote) - to - one(User)
+    public ICollection<SavedNote> SavedNotes { get; set; } = new List<SavedNote>();
 }
