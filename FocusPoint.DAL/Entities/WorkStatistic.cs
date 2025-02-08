@@ -3,8 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FocusPoint.DAL.Entities;
 
-public class WorkSession
+public class WorkStatistic
 {
+    [Key]
     public Guid Id { get; set; }
 
     [Required]
@@ -14,10 +15,11 @@ public class WorkSession
     public User? User { get; set; }
 
     [Required]
-    public DateTime StartTime { get; set; }
-
-    public DateTime? EndTime { get; set; }
+    public DateOnly Date { get; set; }
 
     [Required]
-    public int Duration { get; set; } //minutes
+    public int TotalWorkMinutes { get; set; }
+
+    [Required]
+    public int CompletedTasks { get; set; }
 }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FocusPoint.DAL.Entities;
 
-public class SavedNote
+public class MainNote
 {
     [Key]
     public Guid Id { get; set; }

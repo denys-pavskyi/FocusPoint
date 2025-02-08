@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using FocusPoint.DAL.Entities.Enums;
 
 namespace FocusPoint.DAL.Entities;
 
@@ -16,8 +17,10 @@ public class TaskItem
 
     public bool IsCompleted { get; set; } = false;
 
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime? CompletedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime DueDate { get; set; }
+
+    public Priority Priority { get; set; } = Priority.Low;
 
     [Required]
     public required Guid UserId { get; set; }
