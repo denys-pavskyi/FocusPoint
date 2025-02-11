@@ -17,8 +17,7 @@ public class User
     [MaxLength(100)]
     public string? Email { get; set; }
 
-    [Required]
-    public TimeSpan EndOfDayTime { get; set; }
+    [Required] public TimeSpan EndOfDayTime { get; set; } = new(0, 0, 0);
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? LastLoginAt { get; set; }
