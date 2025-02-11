@@ -12,4 +12,12 @@
     <Folder Include="Views\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FocusPoint.BLL\FocusPoint.BLL.csproj" />
+  </ItemGroup>
+
 </Project>
