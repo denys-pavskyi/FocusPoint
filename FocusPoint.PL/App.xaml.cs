@@ -1,12 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Windows;
 using FocusPoint.DAL.Configurations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System.IO;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace FocusPoint.PL
 {
@@ -16,30 +16,49 @@ namespace FocusPoint.PL
     public partial class App : Application
     {
 
-        public static IServiceProvider ServiceProvider { get; private set; }
+        public static IHost? AppHost { get; private set; }
 
-        protected override void OnStartup(StartupEventArgs e)
+
+        public App()
         {
-            var services = new ServiceCollection();
+            AppHost = Host.CreateDefaultBuilder()
+                .ConfigureAppConfiguration((context, config) =>
+                {
+                    config.SetBasePath(Directory.GetCurrentDirectory());
+                    config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                })
+                .ConfigureServices((hostContext, services) =>
+                {
+                    string? connectionString = hostContext.Configuration.GetConnectionString("FocusPointDB");
 
+                    services.AddDbContext<AppDbContext>(options =>
+                        options.UseNpgsql(connectionString));
 
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory()) // Set base path to current directory
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-            Configuration = builder.Build();
+                    // Services list
+                    services.AddSingleton<MainWindow>();
 
-            // Set up Dependency Injection
-            var serviceProvider = new ServiceCollection()
-                .AddDbContext<AppDbContext>(options =>
-                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))) // Use the connection string from appsettings
-                .AddSingleton<MainWindow>() // Register MainWindow as the starting point
-                .BuildServiceProvider();
+                })
+                .Build();
 
-            ServiceProvider = services.BuildServiceProvider();
+        }
+
+        protected override async void OnStartup(StartupEventArgs e)
+        {
+            await AppHost!.StartAsync();
+
+            var startupForm = AppHost.Services.GetRequiredService<MainWindow>();
+            //startupForm.Show();
+
 
             base.OnStartup(e);
         }
 
+        protected override async void OnExit(ExitEventArgs e)
+        {
+            await AppHost!.StopAsync();
+
+            base.OnExit(e);
+        }
     }
 
 }

@@ -5,9 +5,9 @@ VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusPoint.DAL", "FocusPoint.DAL\FocusPoint.DAL.csproj", "{FAED43A5-81A1-4C12-8721-4C71A1AF8CF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FocusPoint.BLL", "FocusPoint.BLL\FocusPoint.BLL.csproj", "{3AFCBE0E-9E5C-4266-BEF2-3685C59CE1E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusPoint.BLL", "FocusPoint.BLL\FocusPoint.BLL.csproj", "{3AFCBE0E-9E5C-4266-BEF2-3685C59CE1E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FocusPoint.PL", "FocusPoint.PL\FocusPoint.PL.csproj", "{81DD014D-3070-43A1-B06A-A08698358278}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FocusPoint.PL", "FocusPoint.PL\FocusPoint.PL.csproj", "{FA208008-0C3A-4081-80DA-AD8571121FC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,18 +43,18 @@ Global
 		{3AFCBE0E-9E5C-4266-BEF2-3685C59CE1E2}.Release|x64.Build.0 = Release|Any CPU
 		{3AFCBE0E-9E5C-4266-BEF2-3685C59CE1E2}.Release|x86.ActiveCfg = Release|Any CPU
 		{3AFCBE0E-9E5C-4266-BEF2-3685C59CE1E2}.Release|x86.Build.0 = Release|Any CPU
-		{81DD014D-3070-43A1-B06A-A08698358278}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{81DD014D-3070-43A1-B06A-A08698358278}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{81DD014D-3070-43A1-B06A-A08698358278}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{81DD014D-3070-43A1-B06A-A08698358278}.Debug|x64.Build.0 = Debug|Any CPU
-		{81DD014D-3070-43A1-B06A-A08698358278}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{81DD014D-3070-43A1-B06A-A08698358278}.Debug|x86.Build.0 = Debug|Any CPU
-		{81DD014D-3070-43A1-B06A-A08698358278}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{81DD014D-3070-43A1-B06A-A08698358278}.Release|Any CPU.Build.0 = Release|Any CPU
-		{81DD014D-3070-43A1-B06A-A08698358278}.Release|x64.ActiveCfg = Release|Any CPU
-		{81DD014D-3070-43A1-B06A-A08698358278}.Release|x64.Build.0 = Release|Any CPU
-		{81DD014D-3070-43A1-B06A-A08698358278}.Release|x86.ActiveCfg = Release|Any CPU
-		{81DD014D-3070-43A1-B06A-A08698358278}.Release|x86.Build.0 = Release|Any CPU
+		{FA208008-0C3A-4081-80DA-AD8571121FC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA208008-0C3A-4081-80DA-AD8571121FC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA208008-0C3A-4081-80DA-AD8571121FC3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FA208008-0C3A-4081-80DA-AD8571121FC3}.Debug|x64.Build.0 = Debug|Any CPU
+		{FA208008-0C3A-4081-80DA-AD8571121FC3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FA208008-0C3A-4081-80DA-AD8571121FC3}.Debug|x86.Build.0 = Debug|Any CPU
+		{FA208008-0C3A-4081-80DA-AD8571121FC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA208008-0C3A-4081-80DA-AD8571121FC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA208008-0C3A-4081-80DA-AD8571121FC3}.Release|x64.ActiveCfg = Release|Any CPU
+		{FA208008-0C3A-4081-80DA-AD8571121FC3}.Release|x64.Build.0 = Release|Any CPU
+		{FA208008-0C3A-4081-80DA-AD8571121FC3}.Release|x86.ActiveCfg = Release|Any CPU
+		{FA208008-0C3A-4081-80DA-AD8571121FC3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
