@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using FocusPoint.BLL.Other;
 using AutoMapper;
+using FocusPoint.BLL.Interfaces;
+using FocusPoint.BLL.Services;
 
 namespace FocusPoint.PL
 {
@@ -47,6 +49,14 @@ namespace FocusPoint.PL
                     services.AddScoped<IWorkStatisticRepository, WorkStatisticRepository>();
 
                     // Services list
+
+                    services.AddScoped<IMainNoteService, MainNoteService>();
+                    services.AddScoped<ISavedNoteService, SavedNoteService>();
+                    services.AddScoped<ITaskItemService, TaskItemService>();
+                    services.AddScoped<IUserService, UserService>();
+                    services.AddScoped<IWorkSessionService, WorkSessionService>();
+                    services.AddScoped<IWorkStatisticService, WorkStatisticService>();
+
 
                     // Other
 
