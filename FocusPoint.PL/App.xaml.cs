@@ -3,6 +3,8 @@ using System.Data;
 using System.IO;
 using System.Windows;
 using FocusPoint.DAL.Configurations;
+using FocusPoint.DAL.Repositories.Interfaces;
+using FocusPoint.DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,7 +36,17 @@ namespace FocusPoint.PL
                     services.AddDbContext<AppDbContext>(options =>
                         options.UseNpgsql(connectionString));
 
+                    // Repositories
+                    services.AddScoped<IMainNoteRepository, MainNoteRepository>();
+                    services.AddScoped<ISavedNoteRepository, SavedNoteRepository>();
+                    services.AddScoped<ITaskItemRepository, TaskItemRepository>();
+                    services.AddScoped<IUserRepository, UserRepository>();
+                    services.AddScoped<IWorkSessionRepository, WorkSessionRepository>();
+                    services.AddScoped<IWorkStatisticRepository, WorkStatisticRepository>();
+
                     // Services list
+
+                    // Other
                     services.AddSingleton<MainWindow>();
 
                 })
@@ -47,7 +59,7 @@ namespace FocusPoint.PL
             await AppHost!.StartAsync();
 
             var startupForm = AppHost.Services.GetRequiredService<MainWindow>();
-            //startupForm.Show();
+            startupForm.Show();
 
 
             base.OnStartup(e);
