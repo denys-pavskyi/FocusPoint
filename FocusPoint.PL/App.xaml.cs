@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using FocusPoint.BLL.Other;
+using AutoMapper;
 
 namespace FocusPoint.PL
 {
@@ -47,6 +49,14 @@ namespace FocusPoint.PL
                     // Services list
 
                     // Other
+
+                    var mapperConfig = new MapperConfiguration(mc =>
+                    {
+                        mc.AddProfile(new MapperProfile());
+                    });
+
+                    var mapper = mapperConfig.CreateMapper();
+                    services.AddSingleton(mapper);
                     services.AddSingleton<MainWindow>();
 
                 })
