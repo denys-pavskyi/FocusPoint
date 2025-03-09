@@ -2,7 +2,7 @@
 
 namespace FocusPoint.PL.Commands;
 
-public class AsyncRelayCommand
+public class AsyncRelayCommand: ICommand
 {
     private readonly Func<Task> _execute;
     private readonly Func<bool>? _canExecute;

@@ -13,6 +13,8 @@ using FocusPoint.BLL.Other;
 using AutoMapper;
 using FocusPoint.BLL.Interfaces;
 using FocusPoint.BLL.Services;
+using FocusPoint.PL.Views;
+using FocusPoint.PL.ViewModels;
 
 namespace FocusPoint.PL
 {
@@ -58,6 +60,14 @@ namespace FocusPoint.PL
                     services.AddScoped<IWorkStatisticService, WorkStatisticService>();
 
 
+                    // Views/ViewModels
+
+                    services.AddSingleton<MainWindow>();
+                    services.AddSingleton<MainViewModel>();
+                    services.AddSingleton<AuthWindow>();
+                    services.AddSingleton<AuthViewModel>();
+
+
                     // Other
 
                     var mapperConfig = new MapperConfiguration(mc =>
@@ -67,7 +77,6 @@ namespace FocusPoint.PL
 
                     var mapper = mapperConfig.CreateMapper();
                     services.AddSingleton(mapper);
-                    services.AddSingleton<MainWindow>();
 
                 })
                 .Build();
@@ -76,12 +85,15 @@ namespace FocusPoint.PL
 
         protected override async void OnStartup(StartupEventArgs e)
         {
+            //await AppHost!.StartAsync();
+            //var startupForm = AppHost.Services.GetRequiredService<MainWindow>();
+            //startupForm.Show();
+            //base.OnStartup(e);
+
             await AppHost!.StartAsync();
 
-            var startupForm = AppHost.Services.GetRequiredService<MainWindow>();
-            startupForm.Show();
-
-
+            var authWindow = AppHost.Services.GetRequiredService<AuthWindow>();
+            authWindow.Show();
             base.OnStartup(e);
         }
 

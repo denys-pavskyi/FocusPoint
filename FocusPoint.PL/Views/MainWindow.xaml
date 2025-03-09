@@ -7,6 +7,62 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+
+            <ColumnDefinition Width="2*"/>
+
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- 1. TabControls (на рівні цієї секції кнопка буде тут) -->
+        <TabControl Grid.Row="0" Grid.ColumnSpan="3" Height="40">
+            <TabItem Header="Main"/>
+            <TabItem Header="Stats"/>
+            <TabItem Header="Settings"/>
+        </TabControl>
+        <TextBlock Text="Hello, " Grid.Column="1" Grid.ColumnSpan="2" Margin="249,1,99,114" Grid.RowSpan="2" />
+        <TextBlock Text="{Binding CurrentUser.Username}" Grid.Column="1" Grid.ColumnSpan="2" Margin="281,0,67,0" RenderTransformOrigin="0.5,0.5" >
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.336"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </TextBlock.RenderTransform>
+        </TextBlock>
+        <Button Grid.Row="0" Grid.Column="2" Content="Open Saved Notes" Margin="10,1,10,0" VerticalAlignment="Top"/>
+
+        <!-- 2. Time -->
+        <Border Grid.Row="1" Grid.Column="0" Background="#EDEDED" Padding="10" Margin="5">
+            <StackPanel>
+                <TextBlock Text="Time spent" FontSize="16" FontWeight="Bold"/>
+                <TextBlock Text="2 h 35 m" FontSize="20" Foreground="Green"/>
+            </StackPanel>
+        </Border>
+
+        <!-- 3. Tasks -->
+        <Border Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Background="#EDEDED" Padding="10" Margin="5">
+            <StackPanel>
+                <TextBlock Text="Tasks" FontSize="16" FontWeight="Bold"/>
+                <ListBox>
+                    <ListBoxItem Content="Завдання 1"/>
+                    <ListBoxItem Content="Завдання 2"/>
+                    <ListBoxItem Content="Завдання 3"/>
+                </ListBox>
+            </StackPanel>
+        </Border>
+
+        <!-- 4. Main notes -->
+        <Border Grid.Row="2" Grid.ColumnSpan="3" Background="White" Padding="10" Margin="5">
+
+        </Border>
     </Grid>
 </Window>
