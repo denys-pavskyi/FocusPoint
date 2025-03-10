@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using FocusPoint.BLL.Models;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FocusPoint.PL.ViewModels;
 
@@ -15,9 +16,9 @@ public class AuthViewModel : INotifyPropertyChanged
     private string _username = string.Empty;
     private string _password = string.Empty;
     private readonly IUserService _userService;
+    private readonly MainViewModel _mainViewModel;
     public ICommand LoginCommand { get; }
     public event PropertyChangedEventHandler? PropertyChanged;
-
     public string Username
     {
         get => _username;
@@ -30,12 +31,13 @@ public class AuthViewModel : INotifyPropertyChanged
         set { _password = value; OnPropertyChanged(nameof(Password)); }
     }
 
-    public AuthViewModel(IUserService userService, IMapper mapper)
+    public AuthViewModel(IUserService userService, IMapper mapper, 
+        MainViewModel mainViewModel)
     {
         _userService = userService;
         _mapper = mapper;
         LoginCommand = new AsyncRelayCommand(LoginAsync);
-
+        _mainViewModel = mainViewModel;
 
         // Remove later
         Username = "test_user1";
@@ -54,10 +56,12 @@ public class AuthViewModel : INotifyPropertyChanged
             }
 
             var userModel = _mapper.Map<UserDto>(user);
-            // Авторизація успішна, передаємо юзера в MainWindow
+            
             Application.Current.Dispatcher.Invoke(() =>
             {
-                var mainWindow = new MainWindow(userModel); // Передаємо юзера
+                _mainViewModel.CurrentUser = userModel;
+                var mainWindow = new MainWindow(_mainViewModel);
+
                 mainWindow.Show();
                 Application.Current.MainWindow?.Close();
                 Application.Current.MainWindow = mainWindow;

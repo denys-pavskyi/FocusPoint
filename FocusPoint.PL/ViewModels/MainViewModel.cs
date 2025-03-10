@@ -8,9 +8,9 @@ public class MainViewModel
     public event PropertyChangedEventHandler? PropertyChanged;
 
 
-    public UserDto CurrentUser { get; }
+    public UserDto? CurrentUser { get; set; }
 
-    public MainViewModel(UserDto user)
+    public MainViewModel(UserDto? user = null)
     {
         CurrentUser = user;
     }

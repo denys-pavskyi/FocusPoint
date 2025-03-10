@@ -11,6 +11,7 @@ public class AppDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<WorkSession> WorkSessions { get; set; }
     public DbSet<WorkStatistic> WorkStatistics { get; set; }
+    public DbSet<UserSetting> UserSettings { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {

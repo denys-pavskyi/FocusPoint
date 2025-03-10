@@ -8,10 +8,10 @@ namespace FocusPoint.PL
 
     public partial class MainWindow : Window
     {
-        public MainWindow(UserDto userModel)
+        public MainWindow(MainViewModel mainViewModel)
         {
             InitializeComponent();
-            DataContext = new MainViewModel(userModel);
+            DataContext = mainViewModel;
         }
     }
 }

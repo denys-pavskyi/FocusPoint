@@ -49,6 +49,7 @@ namespace FocusPoint.PL
                     services.AddScoped<IUserRepository, UserRepository>();
                     services.AddScoped<IWorkSessionRepository, WorkSessionRepository>();
                     services.AddScoped<IWorkStatisticRepository, WorkStatisticRepository>();
+                    services.AddScoped<IUserSettingRepository, UserSettingRepository>();
 
                     // Services list
 
@@ -58,14 +59,14 @@ namespace FocusPoint.PL
                     services.AddScoped<IUserService, UserService>();
                     services.AddScoped<IWorkSessionService, WorkSessionService>();
                     services.AddScoped<IWorkStatisticService, WorkStatisticService>();
+                    services.AddScoped<IUserSettingsService, UserSettingsService>();
 
 
                     // Views/ViewModels
 
-                    services.AddSingleton<MainWindow>();
                     services.AddSingleton<MainViewModel>();
-                    services.AddSingleton<AuthWindow>();
-                    services.AddSingleton<AuthViewModel>();
+                    services.AddScoped<AuthWindow>();
+                    services.AddScoped<AuthViewModel>();
 
 
                     // Other
@@ -85,11 +86,6 @@ namespace FocusPoint.PL
 
         protected override async void OnStartup(StartupEventArgs e)
         {
-            //await AppHost!.StartAsync();
-            //var startupForm = AppHost.Services.GetRequiredService<MainWindow>();
-            //startupForm.Show();
-            //base.OnStartup(e);
-
             await AppHost!.StartAsync();
 
             var authWindow = AppHost.Services.GetRequiredService<AuthWindow>();
