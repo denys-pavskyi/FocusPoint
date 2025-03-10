@@ -5,8 +5,8 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
-using FocusPoint.BLL.Models;
 using Microsoft.Extensions.DependencyInjection;
+using FocusPoint.BLL.Models.DtoModels;
 
 namespace FocusPoint.PL.ViewModels;
 

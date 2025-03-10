@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using FocusPoint.BLL.Models;
+using FocusPoint.BLL.Models.DtoModels;
 using FocusPoint.DAL.Entities;
 
 namespace FocusPoint.BLL.Other;

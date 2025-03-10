@@ -1,4 +1,4 @@
-﻿namespace FocusPoint.BLL.Models;
+﻿namespace FocusPoint.BLL.Models.DtoModels;
 
 public class UserDto
 {

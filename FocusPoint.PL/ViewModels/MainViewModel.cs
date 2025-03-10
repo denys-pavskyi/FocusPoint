@@ -1,4 +1,4 @@
-﻿using FocusPoint.BLL.Models;
+﻿using FocusPoint.BLL.Models.DtoModels;
 using System.ComponentModel;
 
 namespace FocusPoint.PL.ViewModels;
