@@ -52,7 +52,6 @@ namespace FocusPoint.PL
                     services.AddScoped<IUserSettingRepository, UserSettingRepository>();
 
                     // Services list
-
                     services.AddScoped<IMainNoteService, MainNoteService>();
                     services.AddScoped<ISavedNoteService, SavedNoteService>();
                     services.AddScoped<ITaskItemService, TaskItemService>();
@@ -62,15 +61,17 @@ namespace FocusPoint.PL
                     services.AddScoped<IUserSettingsService, UserSettingsService>();
 
 
-                    // Views/ViewModels
+                    // Views
+                    services.AddTransient<MainWindow>();
+                    services.AddTransient<AuthWindow>();
 
-                    services.AddSingleton<MainViewModel>();
-                    services.AddScoped<AuthWindow>();
+
+                    // ViewModels
+                    services.AddScoped<MainViewModel>();
                     services.AddScoped<AuthViewModel>();
 
-
                     // Other
-
+                    //services.AddSingleton<IServiceProvider>(provider => provider);
                     var mapperConfig = new MapperConfiguration(mc =>
                     {
                         mc.AddProfile(new MapperProfile());
@@ -88,7 +89,12 @@ namespace FocusPoint.PL
         {
             await AppHost!.StartAsync();
 
+            var authViewModel = AppHost.Services.GetRequiredService<AuthViewModel>();
             var authWindow = AppHost.Services.GetRequiredService<AuthWindow>();
+
+            authWindow.DataContext = authViewModel;
+            authViewModel.OnRequestClose += (s, e) => authWindow.Close();
+
             authWindow.Show();
             base.OnStartup(e);
         }

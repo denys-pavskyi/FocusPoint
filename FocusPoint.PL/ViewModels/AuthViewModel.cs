@@ -7,6 +7,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using FocusPoint.BLL.Models.DtoModels;
+using FocusPoint.PL.Views;
 
 namespace FocusPoint.PL.ViewModels;
 
@@ -17,6 +18,9 @@ public class AuthViewModel : INotifyPropertyChanged
     private string _password = string.Empty;
     private readonly IUserService _userService;
     private readonly MainViewModel _mainViewModel;
+    private readonly MainWindow _mainWindow;
+    public event EventHandler? OnRequestClose;
+
     public ICommand LoginCommand { get; }
     public event PropertyChangedEventHandler? PropertyChanged;
     public string Username
@@ -32,12 +36,13 @@ public class AuthViewModel : INotifyPropertyChanged
     }
 
     public AuthViewModel(IUserService userService, IMapper mapper, 
-        MainViewModel mainViewModel)
+        MainViewModel mainViewModel, MainWindow mainWindow)
     {
         _userService = userService;
         _mapper = mapper;
         LoginCommand = new AsyncRelayCommand(LoginAsync);
         _mainViewModel = mainViewModel;
+        _mainWindow = mainWindow;
 
         // Remove later
         Username = "test_user1";
@@ -60,11 +65,13 @@ public class AuthViewModel : INotifyPropertyChanged
             Application.Current.Dispatcher.Invoke(() =>
             {
                 _mainViewModel.CurrentUser = userModel;
-                var mainWindow = new MainWindow(_mainViewModel);
+                _mainWindow.DataContext = _mainViewModel;
 
-                mainWindow.Show();
-                Application.Current.MainWindow?.Close();
-                Application.Current.MainWindow = mainWindow;
+                OnRequestClose?.Invoke(this, EventArgs.Empty);
+
+                Application.Current.MainWindow = _mainWindow;
+                _mainWindow.Show();
+
             });
         }
         catch (Exception ex)
