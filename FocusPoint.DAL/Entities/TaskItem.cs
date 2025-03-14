@@ -25,6 +25,6 @@ public class TaskItem
     [Required]
     public required Guid UserId { get; set; }
 
-    [ForeignKey("UserId")]
+    [ForeignKey(nameof(UserId))]
     public User? User { get; set; } = null!;
 }

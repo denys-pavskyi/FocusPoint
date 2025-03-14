@@ -11,7 +11,7 @@ public class WorkStatistic
     [Required]
     public Guid UserId { get; set; }
 
-    [ForeignKey("UserId")]
+    [ForeignKey(nameof(UserId))]
     public User? User { get; set; }
 
     [Required]

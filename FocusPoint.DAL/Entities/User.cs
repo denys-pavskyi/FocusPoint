@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FocusPoint.DAL.Entities;
 
@@ -23,6 +24,10 @@ public class User
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? LastLoginAt { get; set; }
 
+    public Guid? UserSettingId { get; set; }
+
+    [ForeignKey(nameof(UserSettingId))]
+    public UserSetting? UserSetting { get; set; }
 
     //Relationship with TaskItem many(TaskItem) - to - one(User)
     public ICollection<TaskItem> Tasks { get; set; } = new List<TaskItem>();
