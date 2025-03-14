@@ -18,7 +18,7 @@ public class AuthViewModel : INotifyPropertyChanged
     private string _password = string.Empty;
     private readonly IUserService _userService;
     private readonly MainViewModel _mainViewModel;
-    private readonly MainWindow _mainWindow;
+    private readonly MainView _mainView;
     public event EventHandler? OnRequestClose;
 
     public ICommand LoginCommand { get; }
@@ -36,17 +36,19 @@ public class AuthViewModel : INotifyPropertyChanged
     }
 
     public AuthViewModel(IUserService userService, IMapper mapper, 
-        MainViewModel mainViewModel, MainWindow mainWindow)
+        MainViewModel mainViewModel, MainView mainView)
     {
         _userService = userService;
         _mapper = mapper;
         LoginCommand = new AsyncRelayCommand(LoginAsync);
         _mainViewModel = mainViewModel;
-        _mainWindow = mainWindow;
+        _mainView = mainView;
 
         // Remove later
         Username = "test_user1";
         Password = "hashedpassword";
+
+        LoginAsync();
     }
 
     private async Task LoginAsync()
@@ -65,12 +67,12 @@ public class AuthViewModel : INotifyPropertyChanged
             Application.Current.Dispatcher.Invoke(() =>
             {
                 _mainViewModel.CurrentUser = userModel;
-                _mainWindow.DataContext = _mainViewModel;
+                _mainView.DataContext = _mainViewModel;
 
                 OnRequestClose?.Invoke(this, EventArgs.Empty);
 
-                Application.Current.MainWindow = _mainWindow;
-                _mainWindow.Show();
+                Application.Current.MainWindow = _mainView;
+                _mainView.Show();
 
             });
         }

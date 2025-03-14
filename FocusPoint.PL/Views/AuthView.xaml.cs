@@ -17,11 +17,11 @@ using System.Windows.Shapes;
 namespace FocusPoint.PL.Views
 {
     /// <summary>
-    /// Interaction logic for AuthWindow.xaml
+    /// Interaction logic for AuthView.xaml
     /// </summary>
-    public partial class AuthWindow : Window
+    public partial class AuthView : Window
     {
-        public AuthWindow(AuthViewModel viewModel)
+        public AuthView(AuthViewModel viewModel)
         {
             InitializeComponent();
             DataContext = viewModel;

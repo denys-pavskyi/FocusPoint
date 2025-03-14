@@ -18,6 +18,18 @@ public class MainViewModel : INotifyPropertyChanged
         }
     }
 
+    private UserSettingDto? _userSettings;
+    public UserSettingDto? UserSettings
+    {
+        get => _userSettings;
+        set
+        {
+            _userSettings = value;
+            OnPropertyChanged(nameof(UserSettings));
+        }
+    }
+
+
     public MainViewModel(UserDto? user = null)
     {
         CurrentUser = user;
