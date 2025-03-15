@@ -29,13 +29,21 @@ public class MapperProfile : Profile
             .ReverseMap();
 
 
+        CreateMap<UserSetting, UserSettingDto>()
+            .ReverseMap();
+
+
         CreateMap<User, UserDto>()
             .ForMember(dest => dest.TaskIds, opt => opt.MapFrom(src => src.Tasks.Select(t => t.Id)))
             .ForMember(dest => dest.MainNoteIds, opt => opt.MapFrom(src => src.MainNotes.Select(mn => mn.Id)))
             .ForMember(dest => dest.WorkSessionIds, opt => opt.MapFrom(src => src.WorkSessions.Select(ws => ws.Id)))
             .ForMember(dest => dest.WorkStatisticIds, opt => opt.MapFrom(src => src.WorkStatistics.Select(wst => wst.Id)))
             .ForMember(dest => dest.SavedNoteIds, opt => opt.MapFrom(src => src.SavedNotes.Select(sn => sn.Id)))
+            .ForMember(dest => dest.UserSetting, opt => opt.MapFrom(src => src.UserSetting))
             .ReverseMap();
+
+        CreateMap<UserDto, User>()
+            .ForMember(dest => dest.UserSetting, opt => opt.MapFrom(src => src.UserSetting));
 
 
     }

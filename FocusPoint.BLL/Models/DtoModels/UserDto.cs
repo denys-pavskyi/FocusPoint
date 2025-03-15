@@ -1,4 +1,7 @@
-﻿namespace FocusPoint.BLL.Models.DtoModels;
+﻿using FocusPoint.DAL.Entities;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace FocusPoint.BLL.Models.DtoModels;
 
 public class UserDto
 {
@@ -9,6 +12,11 @@ public class UserDto
     public TimeSpan EndOfDayTime { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? LastLoginAt { get; set; }
+
+    public Guid? UserSettingId { get; set; }
+
+    [ForeignKey(nameof(UserSettingId))]
+    public UserSettingDto? UserSetting { get; set; }
 
     public List<Guid> TaskIds { get; set; } = new();
     public List<Guid> MainNoteIds { get; set; } = new();
