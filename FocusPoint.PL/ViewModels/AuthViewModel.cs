@@ -8,6 +8,7 @@ using System.Windows.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using FocusPoint.BLL.Models.DtoModels;
 using FocusPoint.PL.Views;
+using FocusPoint.DAL.Entities;
 
 namespace FocusPoint.PL.ViewModels;
 
@@ -61,6 +62,28 @@ public class AuthViewModel : INotifyPropertyChanged
                 MessageBox.Show("Invalid username or password", "Login Failed", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+
+            if (user?.UserSetting == null)
+            {
+                var newUserSetting = new UserSettingDto
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = user.Id,
+                    FocusInterval = 25,
+                    WorkBlocks = 4,
+                    UseInternalTimer = false
+                };
+
+
+
+                await _userService.AddUserSettingsAsync(newUserSetting);
+
+
+                user.UserSetting = newUserSetting;
+                user.UserSettingId = newUserSetting.Id;
+            }
+
+
 
             var userModel = _mapper.Map<UserDto>(user);
             

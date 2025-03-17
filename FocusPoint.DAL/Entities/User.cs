@@ -23,10 +23,7 @@ public class User
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? LastLoginAt { get; set; }
-
-    public Guid? UserSettingId { get; set; }
-
-    [ForeignKey(nameof(UserSettingId))]
+        
     public UserSetting? UserSetting { get; set; }
 
     //Relationship with TaskItem many(TaskItem) - to - one(User)

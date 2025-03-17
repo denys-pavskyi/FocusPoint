@@ -9,4 +9,5 @@ public interface IUserService
     Task UpdateSettingsAsync(UserSettingDto userSettingsDto);
     Task<UserSettingDto?> GetUserSettingsByUserIdAsync(Guid userId);
     Task AddUserSettingsAsync(UserSettingDto userSettingsDto);
+    Task UpdateUserAsync(UserDto userDto);
 }

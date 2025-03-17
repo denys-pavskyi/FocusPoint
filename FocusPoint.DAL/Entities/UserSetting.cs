@@ -17,6 +17,4 @@ public class UserSetting
     [ForeignKey(nameof(UserId))]
     public User? User { get; set; }
 
-
-
 }

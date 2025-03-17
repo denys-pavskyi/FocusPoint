@@ -5,4 +5,5 @@ namespace FocusPoint.DAL.Repositories.Interfaces;
 public interface IUserRepository
 {
     Task<User?> GetUserByUsernameAsync(string username);
+    Task UpdateUserAsync(User user);
 }

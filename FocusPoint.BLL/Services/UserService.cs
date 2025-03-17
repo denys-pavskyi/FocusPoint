@@ -48,5 +48,11 @@ public class UserService: IUserService
         await _userSettingRepository.AddUserSettingsAsync(userSetting);
     }
 
+    public async Task UpdateUserAsync(UserDto userDto)
+    {
+        var user = _mapper.Map<User>(userDto);
+        await _userRepository.UpdateUserAsync(user);
+    }
+
 
 }

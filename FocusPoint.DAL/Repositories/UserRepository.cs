@@ -17,12 +17,18 @@ public class UserRepository: IUserRepository
 
     public async Task<User?> GetUserByUsernameAsync(string username)
     {
-        var userByUsername = await _context.Users.FirstOrDefaultAsync(user => string.Equals(user.Username, username));
+        var userByUsername = await _context.Users
+            .Include(u => u.UserSetting)
+            .FirstOrDefaultAsync(user => string.Equals(user.Username, username));
 
         return userByUsername;
     }
 
-
+    public async Task UpdateUserAsync(User user)
+    {
+        _context.Users.Update(user);
+        await _context.SaveChangesAsync();
+    }
 
 
 }

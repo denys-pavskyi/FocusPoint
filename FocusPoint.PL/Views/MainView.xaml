@@ -89,20 +89,20 @@
                     </Grid.RowDefinitions>
 
                     <TextBlock Text="Focus Interval (minutes):" Grid.Row="0" Margin="5"/>
-                    <TextBox Text="{Binding UserSettings.FocusInterval, UpdateSourceTrigger=PropertyChanged}" 
+                    <TextBox Text="{Binding CurrentUser.UserSetting.FocusInterval, UpdateSourceTrigger=PropertyChanged}" 
                              Grid.Row="0" Margin="5" Width="100"/>
 
                     <TextBlock Text="Number of Work Blocks:" Grid.Row="1" Margin="5"/>
-                    <TextBox Text="{Binding UserSettings.WorkBlocks, UpdateSourceTrigger=PropertyChanged}" 
+                    <TextBox Text="{Binding CurrentUser.UserSetting.WorkBlocks, UpdateSourceTrigger=PropertyChanged}" 
                              Grid.Row="1" Margin="5" Width="100"/>
 
                     <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="5">
                         <TextBlock Text="Use Internal Timer:" VerticalAlignment="Center"/>
-                        <CheckBox IsChecked="{Binding UserSettings.UseInternalTimer, UpdateSourceTrigger=PropertyChanged}" 
+                        <CheckBox IsChecked="{Binding CurrentUser.UserSetting.UseInternalTimer, UpdateSourceTrigger=PropertyChanged}" 
                                   Margin="10,0,0,0"/>
                     </StackPanel>
 
-                    <Button Content="Save Settings" Grid.Row="3" Margin="5" Padding="5"
+                    <Button Content="Save Settings" Grid.Row="3" Margin="348,10,348,0" Padding="5"
                             Command="{Binding SaveSettingsCommand}"/>
                 </Grid>
 
