@@ -31,8 +31,15 @@ public class UserService: IUserService
 
     public async Task UpdateSettingsAsync(UserSettingDto userSettingsDto)
     {
-        var userSettings = _mapper.Map<UserSetting>(userSettingsDto);
-        await _userSettingRepository.UpdateSettingsAsync(userSettings);
+        var userSettings = await _userSettingRepository.GetUserSettingsByUserIdAsync(userSettingsDto.UserId);
+
+        if (userSettings is not null)
+        {
+            userSettings.UseInternalTimer = userSettingsDto.UseInternalTimer;
+            userSettings.FocusInterval = userSettingsDto.FocusInterval;
+            userSettings.WorkBlocks = userSettingsDto.WorkBlocks;
+            await _userSettingRepository.UpdateSettingsAsync(userSettings);
+        }
     }
 
     public async Task<UserSettingDto?> GetUserSettingsByUserIdAsync(Guid userId)
