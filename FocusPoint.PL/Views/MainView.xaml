@@ -20,9 +20,6 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <!-- Save Button with left margin -->
@@ -42,11 +39,11 @@
             <TabItem Header="Main">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="125px"/>
+                        <RowDefinition Height="150px"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
                         <ColumnDefinition Width="4*"/>
 
                     </Grid.ColumnDefinitions>
@@ -57,8 +54,47 @@
                             <TextBlock Text="Time spent" FontSize="16" FontWeight="Bold"/>
                             <TextBlock Text="2 h 35 m" FontSize="20" Foreground="Green"/>
                         </StackPanel>-->
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30px"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
 
-                        <ItemsControl ItemsSource="{Binding FocusBlocks}" Grid.Row="0" Margin="5">
+
+                            <DockPanel LastChildFill="True">
+                                <Button x:Name="TimerButton"
+                                        Content="{Binding TimerButtonText}"
+                                        Background="{Binding TimerButtonColor}"
+                                        Foreground="White"
+                                        Padding="5"
+                                        Command="{Binding ToggleTimerCommand}"
+                                        DockPanel.Dock="Left"/>
+
+                                <TextBlock x:Name="TimerDisplay"
+                                           Text="{Binding ElapsedTime, StringFormat={}{0:mm\\:ss}}"
+                                           FontSize="16"
+                                           VerticalAlignment="Center"
+                                           Padding="10"
+                                           DockPanel.Dock="Left"/>
+
+                                <!-- Простір заповнюється -->
+                                <StackPanel Width="100" DockPanel.Dock="Left"/>
+
+                                <Button Content="Add Time"
+                                        Background="LightGray"
+                                        Foreground="Black"
+                                        Padding="5"
+                                        Command="{Binding AddManualTimeCommand}"
+                                        DockPanel.Dock="Right"
+                                        Width="65px"/>
+                            </DockPanel>
+
+
+
+                        </Grid>
+                        
+
+                        <!--<ItemsControl ItemsSource="{Binding FocusBlocks}" Grid.Row="0" Margin="5">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" Margin="5">
@@ -67,7 +103,8 @@
                                     </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                        </ItemsControl>-->
+
                     </Border>
                     
 
