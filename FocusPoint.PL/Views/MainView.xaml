@@ -88,7 +88,21 @@
                                         DockPanel.Dock="Right"
                                         Width="65px"/>
                             </DockPanel>
-
+                            <StackPanel Grid.Row="1">
+                                <ItemsControl ItemsSource="{Binding FocusBlocks}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" Margin="5">
+                                                <Ellipse Width="20" Height="20" Fill="{Binding BlockColor}" Margin="0,0,10,0"/>
+                                                <TextBlock Text="{Binding MinutesWorked}" FontSize="16"/>
+                                                <TextBlock Text=" / " FontSize="16"/>
+                                                <TextBlock Text="{Binding FocusInterval}" FontSize="16"/>
+                                                <TextBlock Text=" хв" FontSize="16"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
 
 
                         </Grid>

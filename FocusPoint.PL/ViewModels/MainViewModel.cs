@@ -65,7 +65,6 @@ public class MainViewModel : INotifyPropertyChanged
         {
             _workBlocks = value;
             OnPropertyChanged(nameof(WorkBlocks));
-            UpdateFocusBlocks();
         }
     }
 
@@ -94,7 +93,9 @@ public class MainViewModel : INotifyPropertyChanged
         CurrentUser = user;
         _userService = userService;
         SaveSettingsCommand = new RelayCommand(async () => await SaveSettingsAsync());
-        UpdateFocusBlocks();
+
+        LoadFocusBlocks(5, 90);
+
     }
 
 
@@ -111,14 +112,14 @@ public class MainViewModel : INotifyPropertyChanged
         }
     }
 
-    private void UpdateFocusBlocks()
+    private void LoadFocusBlocks(int workBlocks, int focusInterval)
     {
         FocusBlocks = new ObservableCollection<FocusBlockViewModel>();
-
-        for (int i = 0; i < WorkBlocks; i++)
+        for (int i = 1; i <= workBlocks; i++)
         {
-            FocusBlocks.Add(new FocusBlockViewModel());
+            FocusBlocks.Add(new FocusBlockViewModel { BlockNumber = i, FocusInterval = focusInterval });
         }
+        OnPropertyChanged(nameof(FocusBlocks));
     }
 
     private void ToggleTimer()

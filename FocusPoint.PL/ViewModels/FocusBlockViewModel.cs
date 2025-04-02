@@ -3,37 +3,29 @@ using System.Windows.Media;
 
 namespace FocusPoint.PL.ViewModels;
 
-public class FocusBlockViewModel : INotifyPropertyChanged
+public class FocusBlockViewModel :  INotifyPropertyChanged
 {
-    private int _currentMinutes;
+    public int BlockNumber { get; set; }
+    public int MinutesWorked { get; set; }
+    public int FocusInterval { get; set; }
+    public SolidColorBrush BlockColor => GetBlockColor();
 
-    public int CurrentMinutes
+    private SolidColorBrush GetBlockColor()
     {
-        get => _currentMinutes;
-        set
-        {
-            _currentMinutes = value;
-            OnPropertyChanged(nameof(CurrentMinutes));
-            OnPropertyChanged(nameof(SessionProgressText));
-            OnPropertyChanged(nameof(SessionStatusColor));
-        }
+        if (MinutesWorked >= FocusInterval) return Brushes.Green;   // Finished
+        if (MinutesWorked > 0) return Brushes.Orange;              // Started
+        return Brushes.Red;                                        // Not started yet
     }
 
-    public string SessionProgressText => $"{CurrentMinutes}/120 хв";
 
-    public SolidColorBrush SessionStatusColor
+    public void UpdateMinutesWorked(int minutes)
     {
-        get
-        {
-            if (CurrentMinutes == 0) return new SolidColorBrush(Colors.Red);
-            if (CurrentMinutes < 120) return new SolidColorBrush(Colors.Yellow);
-            return new SolidColorBrush(Colors.Green);
-        }
+        MinutesWorked = minutes;
+        OnPropertyChanged(nameof(MinutesWorked));
+        OnPropertyChanged(nameof(BlockColor));
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
-    protected void OnPropertyChanged(string propertyName)
-    {
+    private void OnPropertyChanged(string propertyName) =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }
