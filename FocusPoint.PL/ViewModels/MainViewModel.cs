@@ -19,11 +19,16 @@ public class MainViewModel : INotifyPropertyChanged
 
 
     // For time block
-    private int _workBlocks = 3;
-    private int _focusInterval = 120;
     private ObservableCollection<FocusBlockViewModel> _focusBlocks;
-
-
+    public ObservableCollection<FocusBlockViewModel> FocusBlocks
+    {
+        get => _focusBlocks;
+        set
+        {
+            _focusBlocks = value;
+            OnPropertyChanged(nameof(FocusBlocks));
+        }
+    }
 
     // Timer
 
@@ -55,26 +60,6 @@ public class MainViewModel : INotifyPropertyChanged
         {
             _currentUser = value;
             OnPropertyChanged(nameof(CurrentUser));
-        }
-    }
-
-    public int WorkBlocks
-    {
-        get => _workBlocks;
-        set
-        {
-            _workBlocks = value;
-            OnPropertyChanged(nameof(WorkBlocks));
-        }
-    }
-
-    public ObservableCollection<FocusBlockViewModel> FocusBlocks
-    {
-        get => _focusBlocks;
-        set
-        {
-            _focusBlocks = value;
-            OnPropertyChanged(nameof(FocusBlocks));
         }
     }
 
@@ -115,11 +100,26 @@ public class MainViewModel : INotifyPropertyChanged
     private void LoadFocusBlocks(int workBlocks, int focusInterval)
     {
         FocusBlocks = new ObservableCollection<FocusBlockViewModel>();
+
         for (int i = 1; i <= workBlocks; i++)
         {
-            FocusBlocks.Add(new FocusBlockViewModel { BlockNumber = i, FocusInterval = focusInterval });
+            FocusBlocks.Add(new FocusBlockViewModel
+            {
+                BlockNumber = i,
+                FocusInterval = focusInterval
+            });
         }
+
         OnPropertyChanged(nameof(FocusBlocks));
+    }
+
+    public void UpdateBlockProgress(int blockNumber, int minutesWorked)
+    {
+        var block = FocusBlocks.FirstOrDefault(b => b.BlockNumber == blockNumber);
+        if (block != null)
+        {
+            block.UpdateMinutesWorked(minutesWorked);
+        }
     }
 
     private void ToggleTimer()

@@ -90,10 +90,17 @@
                             </DockPanel>
                             <StackPanel Grid.Row="1">
                                 <ItemsControl ItemsSource="{Binding FocusBlocks}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel MaxWidth="400" ItemWidth="80" ItemHeight="40" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal" Margin="5">
-                                                <Ellipse Width="20" Height="20" Fill="{Binding BlockColor}" Margin="0,0,10,0"/>
+                                                <!-- Замінили Ellipse на Rectangle для квадратного вигляду -->
+                                                <Rectangle Width="20" Height="20" Fill="{Binding BlockColor}" Margin="0,0,10,0"/>
                                                 <TextBlock Text="{Binding MinutesWorked}" FontSize="16"/>
                                                 <TextBlock Text=" / " FontSize="16"/>
                                                 <TextBlock Text="{Binding FocusInterval}" FontSize="16"/>
