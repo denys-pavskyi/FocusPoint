@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FocusPoint.PL"
         xmlns:views="clr-namespace:FocusPoint.PL.Views"
-        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" xmlns:viewmodels="clr-namespace:FocusPoint.PL.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
         mc:Ignorable="d"
         Title="MainView" Height="650" Width="900" WindowStartupLocation="CenterScreen">
     
@@ -43,7 +43,7 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="4*"/>
                         <ColumnDefinition Width="4*"/>
 
                     </Grid.ColumnDefinitions>
@@ -88,23 +88,34 @@
                                         DockPanel.Dock="Right"
                                         Width="65px"/>
                             </DockPanel>
+                            
                             <StackPanel Grid.Row="1">
                                 <ItemsControl ItemsSource="{Binding FocusBlocks}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
-                                            <WrapPanel MaxWidth="400" ItemWidth="80" ItemHeight="40" />
+                                            <WrapPanel MaxHeight="100" ItemWidth="200" ItemHeight="30" Orientation="Vertical"/>
                                         </ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
 
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <StackPanel Orientation="Horizontal" Margin="5">
-                                                <!-- Замінили Ellipse на Rectangle для квадратного вигляду -->
-                                                <Rectangle Width="20" Height="20" Fill="{Binding BlockColor}" Margin="0,0,10,0"/>
-                                                <TextBlock Text="{Binding MinutesWorked}" FontSize="16"/>
-                                                <TextBlock Text=" / " FontSize="16"/>
-                                                <TextBlock Text="{Binding FocusInterval}" FontSize="16"/>
-                                                <TextBlock Text=" хв" FontSize="16"/>
+                                            <StackPanel Orientation="Horizontal" Margin="5" >
+                                                <Rectangle Width="20" Height="20" Fill="Red" Margin="0,0,5,0" 
+                                                    Stroke="Black" StrokeThickness="2"  RadiusX="4" RadiusY="4" />
+                                                    <ProgressBar Value="20" Maximum="100" Height="20" Width="70" Margin="0,0,5,0"
+                                                             Background="#F0F0F0" Foreground="Red"
+                                                             BorderBrush="#CCC" BorderThickness="1">
+                                                        <ProgressBar.Resources>
+                                                            <Style TargetType="Rectangle">
+                                                                <Setter Property="RadiusX" Value="4"/>
+                                                                <Setter Property="RadiusY" Value="4"/>
+                                                            </Style>
+                                                        </ProgressBar.Resources>
+                                                    </ProgressBar>
+                                                    <TextBlock FontSize="14">
+                                                        <Run Text="⏱ "/>
+                                                        <Run Text="0 / 90 min"/>             
+                                                    </TextBlock>
                                             </StackPanel>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
