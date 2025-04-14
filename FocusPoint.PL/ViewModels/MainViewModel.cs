@@ -2,6 +2,7 @@
 using FocusPoint.BLL.Models.DtoModels;
 using FocusPoint.DAL.Entities;
 using FocusPoint.PL.Commands;
+using FocusPoint.PL.Views;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -14,6 +15,7 @@ namespace FocusPoint.PL.ViewModels;
 public class MainViewModel : INotifyPropertyChanged
 {
     private readonly IUserService _userService;
+    private readonly IWorkSessionService _workSessionService;
     public event PropertyChangedEventHandler? PropertyChanged;
     private UserDto? _currentUser;
 
@@ -47,8 +49,8 @@ public class MainViewModel : INotifyPropertyChanged
             OnPropertyChanged(nameof(ElapsedTime)); }
     }
 
-    public ICommand ToggleTimerCommand { get; }
-    public ICommand AddManualTimeCommand { get; }
+    public ICommand ToggleTimerCommand => new RelayCommand(ToggleTimer);
+    public ICommand AddManualTimeCommand => new RelayCommand(OpenAddManualTimeDialog);
 
 
     public ICommand SaveSettingsCommand { get; }
@@ -63,11 +65,8 @@ public class MainViewModel : INotifyPropertyChanged
         }
     }
 
-    public MainViewModel(IUserService userService, UserDto user = null)
+    public MainViewModel(IUserService userService, IWorkSessionService workSession, UserDto user = null)
     {
-
-        ToggleTimerCommand = new RelayCommand(ToggleTimer);
-        AddManualTimeCommand = new RelayCommand(AddManualTime);
 
         _timer = new DispatcherTimer
         {
@@ -77,6 +76,7 @@ public class MainViewModel : INotifyPropertyChanged
 
         CurrentUser = user;
         _userService = userService;
+        _workSessionService = workSession;
         SaveSettingsCommand = new RelayCommand(async () => await SaveSettingsAsync());
 
         LoadFocusBlocks(5, 90);
@@ -88,7 +88,7 @@ public class MainViewModel : INotifyPropertyChanged
     {
         try
         {
-            await _userService.UpdateSettingsAsync(CurrentUser.UserSetting);
+            await _userService.UpdateSettingsAsync(CurrentUser.UserSetting!);
             // TODO Logic for interface update
         }
         catch (Exception ex)
@@ -144,11 +144,20 @@ public class MainViewModel : INotifyPropertyChanged
         ElapsedTime = DateTime.UtcNow - _startTime;
     }
 
-    private void AddManualTime()
-    {
-        // Відкрити діалог або збільшити ElapsedTime вручну
-    }
 
+
+    private void OpenAddManualTimeDialog()
+    {
+        if (_currentUser == null) return;
+
+        var window = new AddWorkSessionView(_currentUser.Id, async session =>
+        {
+            await _workSessionService.AddAsync(session);
+            // Оновити список сесій, якщо потрібно
+        });
+
+        window.ShowDialog();
+    }
 
     protected virtual void OnPropertyChanged(string propertyName)
     {
