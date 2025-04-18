@@ -81,6 +81,13 @@ public class MainViewModel : INotifyPropertyChanged
 
         LoadFocusBlocks(5, 90);
 
+
+    }
+
+    public async Task InitializeAsync()
+    {
+        var minutesWorked = await CalculateWorkedMinutesForToday();
+        UpdateFocusBlocks(minutesWorked);
     }
 
 
@@ -153,11 +160,80 @@ public class MainViewModel : INotifyPropertyChanged
         var window = new AddWorkSessionView(_currentUser.Id, async session =>
         {
             await _workSessionService.AddAsync(session);
-            // Оновити список сесій, якщо потрібно
+
+            var sessions = await _workSessionService.GetAllForDateAsync(DateTime.Today);
+            var minutesWorked = await CalculateWorkedMinutesForToday();
+
+            UpdateFocusBlocks(minutesWorked);
+
         });
 
         window.ShowDialog();
     }
+
+
+    private void UpdateFocusBlocks(int minutesWorked)
+    {
+        if (FocusBlocks == null || FocusBlocks.Count == 0)
+            return;
+
+        foreach (var block in FocusBlocks)
+        {
+            if (minutesWorked <= 0)
+            {
+                block.MinutesWorked = 0;
+            }
+            else if (minutesWorked >= block.FocusInterval)
+            {
+                block.MinutesWorked = block.FocusInterval;
+                minutesWorked -= block.FocusInterval;
+            }
+            else
+            {
+                block.MinutesWorked = minutesWorked;
+                minutesWorked = 0;
+            }
+        }
+    }
+
+
+    private async Task<int> CalculateWorkedMinutesForToday()
+    {
+        var sessions = await _workSessionService.GetAllForDateAsync(DateTime.Today);
+
+        if (_currentUser == null || _currentUser.EndOfDayTime == null)
+            throw new InvalidOperationException("User or EndOfDayTime is not set.");
+
+        var endOfDay = _currentUser.EndOfDayTime;
+        var today = DateTime.Today;
+
+
+        var dayStart = today.Add(endOfDay);
+        if (DateTime.Now.TimeOfDay < endOfDay)
+            dayStart = dayStart.AddDays(-1);
+
+        var dayEnd = dayStart.AddDays(1);
+
+        int totalMinutes = 0;
+
+        foreach (var session in sessions)
+        {
+            var sessionStart = session.StartTime;
+            var sessionEnd = session.EndTime ?? DateTime.Now;
+
+            var overlapStart = sessionStart > dayStart ? sessionStart : dayStart;
+            var overlapEnd = sessionEnd < dayEnd ? sessionEnd : dayEnd;
+
+            if (overlapEnd > overlapStart)
+            {
+                var minutes = (int)(overlapEnd - overlapStart).TotalMinutes;
+                totalMinutes += minutes;
+            }
+        }
+
+        return totalMinutes;
+    }
+
 
     protected virtual void OnPropertyChanged(string propertyName)
     {

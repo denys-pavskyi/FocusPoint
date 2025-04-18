@@ -19,8 +19,8 @@ public class WorkSessionRepository: IWorkSessionRepository
     public async Task<IEnumerable<WorkSession>> GetAllForDateAsync(DateTime date)
     {
 
-        var startOfDay = date.Date;
-        var endOfDay = startOfDay.AddDays(1);
+        var startOfDay = date.Date.ToUniversalTime();
+        var endOfDay = startOfDay.AddDays(1).ToUniversalTime();
 
         var workSessions = await _context.WorkSessions
             .Where(ws =>

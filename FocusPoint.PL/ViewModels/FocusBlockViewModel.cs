@@ -6,7 +6,21 @@ namespace FocusPoint.PL.ViewModels;
 public class FocusBlockViewModel : INotifyPropertyChanged
 {
     public int BlockNumber { get; set; }
-    public int MinutesWorked { get; set; }
+    private int _minutesWorked;
+    public int MinutesWorked
+    {
+        get => _minutesWorked;
+        set
+        {
+            if (_minutesWorked != value)
+            {
+                _minutesWorked = value;
+                OnPropertyChanged(nameof(MinutesWorked));
+                OnPropertyChanged(nameof(ProgressPercentage));
+                OnPropertyChanged(nameof(BlockColor));
+            }
+        }
+    }
     public int FocusInterval { get; set; }
     public double ProgressPercentage => (FocusInterval > 0) ? (double)MinutesWorked / FocusInterval * 100 : 0;
 
