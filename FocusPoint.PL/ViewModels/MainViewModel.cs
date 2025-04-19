@@ -18,6 +18,7 @@ public class MainViewModel : INotifyPropertyChanged
     private readonly IWorkSessionService _workSessionService;
     public event PropertyChangedEventHandler? PropertyChanged;
     private UserDto? _currentUser;
+    int _minutesWorked;
 
 
     // For time block
@@ -205,7 +206,7 @@ public class MainViewModel : INotifyPropertyChanged
             throw new InvalidOperationException("User or EndOfDayTime is not set.");
 
         var endOfDay = _currentUser.EndOfDayTime;
-        var today = DateTime.Today;
+        var today = DateTime.Today.ToUniversalTime();
 
 
         var dayStart = today.Add(endOfDay);
