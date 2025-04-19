@@ -35,9 +35,9 @@ public class MainViewModel : INotifyPropertyChanged
 
     // Timer
 
-    private DispatcherTimer? _timer;
-    private DateTime _startTime;
+    private DispatcherTimer _timer;
     private bool _isTimerRunning;
+    private DateTime _startTime;
 
     public string TimerButtonText => _isTimerRunning ? "Stop" : "Start";
     public Brush TimerButtonColor => _isTimerRunning ? Brushes.Red : Brushes.Green;
@@ -125,19 +125,39 @@ public class MainViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(FocusBlocks));
     }
 
-    private void ToggleTimer()
+    private async void ToggleTimer()
     {
         if (_isTimerRunning)
         {
             _timer?.Stop();
+            _isTimerRunning = false;
+
+            var elapsedMinutes = (int)_elapsedTime.TotalMinutes;
+            if (elapsedMinutes > 0 && _currentUser != null)
+            {
+                var session = new WorkSessionDto
+                {
+                    Id = Guid.NewGuid(),
+                    UserId = _currentUser.Id,
+                    StartTime = _startTime,
+                    EndTime = _startTime.AddMinutes(elapsedMinutes),
+                    Duration = elapsedMinutes
+                };
+
+                await _workSessionService.AddAsync(session);
+                _minutesWorked += session.Duration;
+                UpdateFocusBlocks(_minutesWorked);
+            }
+
+
         }
         else
         {
             _startTime = DateTime.UtcNow;
             _timer?.Start();
+            _isTimerRunning = true;
         }
 
-        _isTimerRunning = !_isTimerRunning;
         OnPropertyChanged(nameof(TimerButtonText));
         OnPropertyChanged(nameof(TimerButtonColor));
     }
