@@ -43,7 +43,7 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="4.5*"/>
                         <ColumnDefinition Width="4*"/>
 
                     </Grid.ColumnDefinitions>
@@ -93,7 +93,7 @@
                                 <ItemsControl ItemsSource="{Binding FocusBlocks}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
-                                            <WrapPanel MaxHeight="100" ItemWidth="210" ItemHeight="30" Orientation="Vertical"/>
+                                            <WrapPanel MaxHeight="100" ItemWidth="230" ItemHeight="30" Orientation="Vertical"/>
                                         </ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
 

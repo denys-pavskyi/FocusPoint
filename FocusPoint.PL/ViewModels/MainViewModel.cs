@@ -80,15 +80,18 @@ public class MainViewModel : INotifyPropertyChanged
         _workSessionService = workSession;
         SaveSettingsCommand = new RelayCommand(async () => await SaveSettingsAsync());
 
-        LoadFocusBlocks(5, 90);
-
 
     }
 
     public async Task InitializeAsync()
     {
-        var minutesWorked = await CalculateWorkedMinutesForToday();
-        UpdateFocusBlocks(minutesWorked);
+        if (_currentUser.UserSetting != null)
+        {
+            LoadFocusBlocks(_currentUser.UserSetting.WorkBlocks, _currentUser.UserSetting.FocusInterval);
+
+            _minutesWorked = await CalculateWorkedMinutesForToday();
+            UpdateFocusBlocks(_minutesWorked);
+        }
     }
 
 
@@ -97,7 +100,8 @@ public class MainViewModel : INotifyPropertyChanged
         try
         {
             await _userService.UpdateSettingsAsync(CurrentUser.UserSetting!);
-            // TODO Logic for interface update
+            LoadFocusBlocks(CurrentUser.UserSetting!.WorkBlocks, CurrentUser.UserSetting.FocusInterval);
+            UpdateFocusBlocks(_minutesWorked);
         }
         catch (Exception ex)
         {
@@ -119,15 +123,6 @@ public class MainViewModel : INotifyPropertyChanged
         }
 
         OnPropertyChanged(nameof(FocusBlocks));
-    }
-
-    public void UpdateBlockProgress(int blockNumber, int minutesWorked)
-    {
-        var block = FocusBlocks.FirstOrDefault(b => b.BlockNumber == blockNumber);
-        if (block != null)
-        {
-            block.UpdateMinutesWorked(minutesWorked);
-        }
     }
 
     private void ToggleTimer()
@@ -162,10 +157,9 @@ public class MainViewModel : INotifyPropertyChanged
         {
             await _workSessionService.AddAsync(session);
 
-            var sessions = await _workSessionService.GetAllForDateAsync(DateTime.Today);
-            var minutesWorked = await CalculateWorkedMinutesForToday();
+            _minutesWorked = await CalculateWorkedMinutesForToday();
 
-            UpdateFocusBlocks(minutesWorked);
+            UpdateFocusBlocks(_minutesWorked);
 
         });
 
