@@ -54,7 +54,31 @@ public class MainViewModel : INotifyPropertyChanged
     public ICommand AddManualTimeCommand => new RelayCommand(OpenAddManualTimeDialog);
 
 
-    public ICommand SaveSettingsCommand { get; }
+    private SettingsViewModel _settingsViewModel;
+    public SettingsViewModel SettingsViewModel
+    {
+        get => _settingsViewModel;
+        set
+        {
+            _settingsViewModel = value;
+            OnPropertyChanged(nameof(SettingsViewModel));
+        }
+    }
+
+    private int _selectedTabIndex;
+    public int SelectedTabIndex
+    {
+        get => _selectedTabIndex;
+        set
+        {
+            if (_selectedTabIndex != value)
+            {
+                _selectedTabIndex = value;
+                OnPropertyChanged(nameof(SelectedTabIndex));
+                OnTabChanged();
+            }
+        }
+    }
 
     public UserDto CurrentUser
     {
@@ -78,8 +102,6 @@ public class MainViewModel : INotifyPropertyChanged
         CurrentUser = user;
         _userService = userService;
         _workSessionService = workSession;
-        SaveSettingsCommand = new RelayCommand(async () => await SaveSettingsAsync());
-
 
     }
 
@@ -91,21 +113,18 @@ public class MainViewModel : INotifyPropertyChanged
 
             _minutesWorked = await CalculateWorkedMinutesForToday();
             UpdateFocusBlocks(_minutesWorked);
+
+            SettingsViewModel = new SettingsViewModel(CurrentUser, _userService);
+
         }
     }
 
-
-    private async Task SaveSettingsAsync()
+    public void RefreshFocusBlocks()
     {
-        try
+        if (CurrentUser?.UserSetting is not null)
         {
-            await _userService.UpdateSettingsAsync(CurrentUser.UserSetting!);
-            LoadFocusBlocks(CurrentUser.UserSetting!.WorkBlocks, CurrentUser.UserSetting.FocusInterval);
+            LoadFocusBlocks(CurrentUser.UserSetting.WorkBlocks, CurrentUser.UserSetting.FocusInterval);
             UpdateFocusBlocks(_minutesWorked);
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"Error saving settings: {ex.Message}");
         }
     }
 
@@ -249,6 +268,14 @@ public class MainViewModel : INotifyPropertyChanged
         return totalMinutes;
     }
 
+
+    private void OnTabChanged()
+    {
+        if (SelectedTabIndex == 0)
+        {
+            RefreshFocusBlocks();
+        }
+    }
 
     protected virtual void OnPropertyChanged(string propertyName)
     {

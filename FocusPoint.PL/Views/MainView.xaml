@@ -34,7 +34,7 @@
             </StackPanel>
         </Grid>
 
-        <TabControl Grid.Row="1">
+        <TabControl Grid.Row="1" SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}">
 
             <TabItem Header="Main">
                 <Grid>
@@ -50,10 +50,7 @@
 
                     <!-- Time Block -->
                     <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" Background="#EDEDED" Padding="10" Margin="5">
-                        <!--<StackPanel>
-                            <TextBlock Text="Time spent" FontSize="16" FontWeight="Bold"/>
-                            <TextBlock Text="2 h 35 m" FontSize="20" Foreground="Green"/>
-                        </StackPanel>-->
+
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="30px"/>
@@ -132,18 +129,6 @@
 
 
                         </Grid>
-                        
-
-                        <!--<ItemsControl ItemsSource="{Binding FocusBlocks}" Grid.Row="0" Margin="5">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" Margin="5">
-                                        <Ellipse Width="10" Height="10" Fill="{Binding SessionStatusColor}" Margin="0,5,5,0"/>
-                                        <TextBlock Text="{Binding SessionProgressText}" VerticalAlignment="Center"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>-->
 
                     </Border>
                     
@@ -168,37 +153,19 @@
                     </Border>
                 </Grid>
             </TabItem>
-            <TabItem Header="Stats"/>
+
+            <TabItem Header="Tasks">
+                
+
+            </TabItem>
+
+
+            <TabItem Header="Stats">
+
+            </TabItem>
+
             <TabItem Header="Settings">
-                <Grid Margin="10">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <TextBlock Text="Focus Interval (minutes):" Grid.Row="0" Margin="5"/>
-                    <xctk:IntegerUpDown Value="{Binding CurrentUser.UserSetting.FocusInterval, UpdateSourceTrigger=PropertyChanged}"
-                                        Minimum="10" Maximum="180" Increment="5"
-                                        Grid.Row="0" Margin="5" Width="100"/>
-
-                    <TextBlock Text="Number of Work Blocks:" Grid.Row="1" Margin="5"/>
-
-                    <xctk:IntegerUpDown Value="{Binding CurrentUser.UserSetting.WorkBlocks, UpdateSourceTrigger=PropertyChanged}"
-                                        Minimum="1" Maximum="5"
-                                        Grid.Row="1" Margin="5" Width="100"/>
-
-                    <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="5">
-                        <TextBlock Text="Use Internal Timer:" VerticalAlignment="Center"/>
-                        <CheckBox IsChecked="{Binding CurrentUser.UserSetting.UseInternalTimer, UpdateSourceTrigger=PropertyChanged}" 
-                                  Margin="10,0,0,0"/>
-                    </StackPanel>
-
-                    <Button Content="Save Settings" Grid.Row="3" Margin="348,10,348,0" Padding="5"
-                            Command="{Binding SaveSettingsCommand}"/>
-                </Grid>
-
+                <views:SettingsView DataContext="{Binding SettingsViewModel}" />
             </TabItem>
 
         </TabControl>
