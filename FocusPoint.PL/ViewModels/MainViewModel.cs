@@ -16,6 +16,7 @@ public class MainViewModel : INotifyPropertyChanged
 {
     private readonly IUserService _userService;
     private readonly IWorkSessionService _workSessionService;
+    private readonly ITaskItemService _taskItemService;
     public event PropertyChangedEventHandler? PropertyChanged;
     private UserDto? _currentUser;
     int _minutesWorked;
@@ -54,6 +55,7 @@ public class MainViewModel : INotifyPropertyChanged
     public ICommand AddManualTimeCommand => new RelayCommand(OpenAddManualTimeDialog);
 
 
+    // ViewModels for other windows
     private SettingsViewModel _settingsViewModel;
     public SettingsViewModel SettingsViewModel
     {
@@ -64,6 +66,18 @@ public class MainViewModel : INotifyPropertyChanged
             OnPropertyChanged(nameof(SettingsViewModel));
         }
     }
+
+    private TasksViewModel _tasksViewModel;
+    public TasksViewModel TasksViewModel
+    {
+        get => _tasksViewModel;
+        set
+        {
+            _tasksViewModel = value;
+            OnPropertyChanged(nameof(TasksViewModel));
+        }
+    }
+
 
     private int _selectedTabIndex;
     public int SelectedTabIndex
@@ -90,7 +104,8 @@ public class MainViewModel : INotifyPropertyChanged
         }
     }
 
-    public MainViewModel(IUserService userService, IWorkSessionService workSession, UserDto user = null)
+    public MainViewModel(IUserService userService, IWorkSessionService workSession,
+        ITaskItemService taskItemService, UserDto user = null)
     {
 
         _timer = new DispatcherTimer
@@ -102,6 +117,7 @@ public class MainViewModel : INotifyPropertyChanged
         CurrentUser = user;
         _userService = userService;
         _workSessionService = workSession;
+        _taskItemService = taskItemService;
 
     }
 
@@ -115,7 +131,7 @@ public class MainViewModel : INotifyPropertyChanged
             UpdateFocusBlocks(_minutesWorked);
 
             SettingsViewModel = new SettingsViewModel(CurrentUser, _userService);
-
+            TasksViewModel = new TasksViewModel(_taskItemService, _currentUser.Id);
         }
     }
 

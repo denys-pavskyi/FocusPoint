@@ -155,8 +155,7 @@
             </TabItem>
 
             <TabItem Header="Tasks">
-                
-
+                <views:TasksView DataContext="{Binding TasksViewModel}" />
             </TabItem>
 
 

@@ -65,7 +65,6 @@ namespace FocusPoint.PL
                     // ViewModels
                     services.AddScoped<MainViewModel>();
                     services.AddScoped<AuthViewModel>();
-                    //services.AddScoped<SettingsViewModel>();
 
 
                     // Views
