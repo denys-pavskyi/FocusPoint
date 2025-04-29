@@ -6,6 +6,7 @@ using FocusPoint.BLL.Interfaces;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using FocusPoint.BLL.Models.DtoModels;
+using FocusPoint.PL.Views;
 
 namespace FocusPoint.PL.ViewModels;
 
@@ -53,20 +54,46 @@ public class TasksViewModel: INotifyPropertyChanged
 
     private void AddTask()
     {
-        // TODO: Open window to add task
+        var newTask = new TaskItemDto
+        {
+            UserId = _currentUserId
+        };
+        var viewModel = new TaskDialogViewModel(_taskItemService, newTask);
+        var dialog = new TaskDialogView(viewModel);
+
+        viewModel.OnSave += async (sender, task) =>
+        {
+            Tasks.Add(task);
+        };
+
+        dialog.ShowDialog();
     }
 
     private void EditTask()
     {
-        // TODO: Open window to edit task
+        if (SelectedTask == null) return;
+
+        var viewModel = new TaskDialogViewModel(_taskItemService, SelectedTask);
+        var dialog = new TaskDialogView(viewModel);
+
+        viewModel.OnSave += async (sender, task) =>
+        {
+            var index = Tasks.IndexOf(SelectedTask);
+            Tasks[index] = task;
+        };
+
+        dialog.ShowDialog();
     }
 
     private async void DeleteTask()
     {
         if (SelectedTask != null)
         {
-            //await _taskService.DeleteAsync(SelectedTask.Id);
-            Tasks.Remove(SelectedTask);
+            var success = await _taskItemService.RemoveByIdAsync(SelectedTask.Id);
+            if (success)
+            {
+                Tasks.Remove(SelectedTask);
+            }
         }
     }
 

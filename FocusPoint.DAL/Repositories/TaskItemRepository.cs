@@ -24,6 +24,9 @@ public class TaskItemRepository: ITaskItemRepository
 
     public async Task AddAsync(TaskItem newTask)
     {
+        newTask.DueDate = newTask.DueDate.ToUniversalTime();
+        newTask.CreatedAt = newTask.CreatedAt.ToUniversalTime();
+
         await _context.TaskItems.AddAsync(newTask);
         await _context.SaveChangesAsync();
     }
@@ -41,7 +44,7 @@ public class TaskItemRepository: ITaskItemRepository
         task.Title = updatedTask.Title;
         task.Description = updatedTask.Description;
         task.IsCompleted = updatedTask.IsCompleted;
-        task.DueDate = updatedTask.DueDate;
+        task.DueDate = updatedTask.DueDate.ToUniversalTime();
         task.Priority = updatedTask.Priority;
 
         _context.TaskItems.Update(task);

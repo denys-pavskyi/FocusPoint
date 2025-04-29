@@ -1,0 +1,74 @@
+﻿<Window x:Class="FocusPoint.PL.Views.TaskDialogView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FocusPoint.PL.Views"
+        xmlns:enums="clr-namespace:FocusPoint.DAL.Entities.Enums;assembly=FocusPoint.DAL"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+     Title="TaskDialogView" Height="300" Width="350">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Title -->
+            <RowDefinition Height="Auto"/>
+            <!-- Description -->
+            <RowDefinition Height="Auto"/>
+            <!-- Due Date -->
+            <RowDefinition Height="Auto"/>
+            <!-- Priority -->
+            <RowDefinition Height="Auto"/>
+            <!-- Completed -->
+            <RowDefinition Height="*"/>
+            <!-- Spacer -->
+            <RowDefinition Height="Auto"/>
+            <!-- Button -->
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <!-- Labels -->
+            <ColumnDefinition Width="*"/>
+            <!-- Inputs -->
+        </Grid.ColumnDefinitions>
+
+        <!-- Title -->
+        <TextBlock Text="Title:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,5"/>
+        <TextBox Text="{Binding Task.Title, UpdateSourceTrigger=PropertyChanged}" 
+                 Grid.Row="0" Grid.Column="1" Margin="5" />
+
+        <!-- Description -->
+        <TextBlock Text="Description:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" Margin="0,5"/>
+        <TextBox Text="{Binding Task.Description, UpdateSourceTrigger=PropertyChanged}" 
+                 Grid.Row="1" Grid.Column="1" Margin="5" Height="60" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
+
+        <!-- Due Date -->
+        <TextBlock Text="Due Date:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,5"/>
+        <DatePicker SelectedDate="{Binding Task.DueDate, UpdateSourceTrigger=PropertyChanged}" 
+                    Grid.Row="2" Grid.Column="1" Margin="5" />
+
+        <!-- Priority -->
+        <TextBlock Text="Priority:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="0,5"/>
+        <ComboBox SelectedItem="{Binding Task.Priority, UpdateSourceTrigger=PropertyChanged}" 
+                  Grid.Row="3" Grid.Column="1" Margin="5" Width="150">
+            <ComboBox.ItemsSource>
+                <x:Array Type="{x:Type enums:Priority}">
+                    <enums:Priority>Low</enums:Priority>
+                    <enums:Priority>Medium</enums:Priority>
+                    <enums:Priority>High</enums:Priority>
+                </x:Array>
+            </ComboBox.ItemsSource>
+        </ComboBox>
+
+        <!-- Completed -->
+        <TextBlock Text="Completed:" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="0,5"/>
+        <CheckBox IsChecked="{Binding Task.IsCompleted, UpdateSourceTrigger=PropertyChanged}" 
+                  Grid.Row="4" Grid.Column="1" Margin="5" VerticalAlignment="Center"/>
+
+        <!-- Save Button -->
+        <Button Content="{Binding ButtonText}" Width="120" Height="30"
+                Grid.Row="6" Grid.ColumnSpan="2" HorizontalAlignment="Center" 
+                Command="{Binding SaveCommand}" Margin="0,10,0,0"/>
+    </Grid>
+</Window>
+
