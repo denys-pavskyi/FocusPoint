@@ -31,6 +31,16 @@ public class TasksViewModel: INotifyPropertyChanged
     public ICommand AddTaskCommand => new RelayCommand(AddTask);
     public ICommand EditTaskCommand => new RelayCommand(EditTask, () => SelectedTask != null);
     public ICommand DeleteTaskCommand => new RelayCommand(DeleteTask, () => SelectedTask != null);
+    public ICommand MarkCompletedCommand => new RelayCommand(MarkSelectedTaskCompleted);
+
+    private async void MarkSelectedTaskCompleted()
+    {
+        if (SelectedTask is null) return;
+
+        SelectedTask.IsCompleted = true;
+        await _taskItemService.UpdateAsync(SelectedTask);
+        Tasks.Remove(SelectedTask);
+    }
 
     public TasksViewModel(ITaskItemService taskItemService, Guid currentUserId)
     {
