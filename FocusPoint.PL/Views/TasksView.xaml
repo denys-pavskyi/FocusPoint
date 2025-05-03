@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FocusPoint.PL.Views" xmlns:viewmodels="clr-namespace:FocusPoint.PL.ViewModels"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-             xmlns:other="clr-namespace:FocusPoint.PL.Other"
+             xmlns:other="clr-namespace:FocusPoint.PL.Other" d:DataContext="{d:DesignInstance Type=viewmodels:TasksViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -62,7 +62,10 @@
         </StackPanel>
 
         <!-- Tasks list -->
-        <ListBox Grid.Row="1" ItemsSource="{Binding Tasks}" SelectedItem="{Binding SelectedTask}">
+        <ListBox Grid.Row="1" 
+                 ItemsSource="{Binding Tasks}" 
+                 SelectedItem="{Binding SelectedTask}"
+                 MouseDoubleClick="ListBox_MouseDoubleClick">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border BorderBrush="#CCC" BorderThickness="1" Padding="10" Margin="5">
@@ -85,6 +88,13 @@
                     </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>
+
+            <!-- Double-click handler -->
+            <ListBox.InputBindings>
+                <MouseBinding Gesture="LeftDoubleClick"
+                              Command="{Binding EditTaskCommand}"
+                              CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource Self}}"/>
+            </ListBox.InputBindings>
         </ListBox>
 
 

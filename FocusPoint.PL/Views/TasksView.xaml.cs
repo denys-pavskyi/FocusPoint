@@ -26,5 +26,13 @@ namespace FocusPoint.PL.Views
         {
             InitializeComponent();
         }
+
+        private void ListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (DataContext is TasksViewModel vm && vm.EditTaskCommand.CanExecute(null))
+            {
+                vm.EditTaskCommand.Execute(null);
+            }
+        }
     }
 }
