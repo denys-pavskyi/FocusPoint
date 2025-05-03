@@ -5,7 +5,7 @@ namespace FocusPoint.BLL.Interfaces;
 
 public interface ITaskItemService
 {
-    IEnumerable<TaskItemDto> GetAllForUserAsync(Guid userId);
+    Task<IEnumerable<TaskItemDto>> GetAllForUserAsync(Guid userId, bool? isComplete = null);
     Task AddAsync(TaskItemDto newTask);
     Task UpdateAsync(TaskItemDto updatedTask);
     Task<bool> RemoveByIdAsync(Guid taskId);

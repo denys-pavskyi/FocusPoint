@@ -17,9 +17,9 @@ public class TaskItemService: ITaskItemService
         _mapper = mapper;
     }
 
-    public IEnumerable<TaskItemDto> GetAllForUserAsync(Guid userId)
+    public async Task<IEnumerable<TaskItemDto>> GetAllForUserAsync(Guid userId, bool? isComplete = null)
     {
-        var tasks = _taskItemRepository.GetAllForUserAsync(userId);
+        var tasks = await _taskItemRepository.GetAllForUserAsync(userId, isComplete);
 
         return _mapper.Map<IEnumerable<TaskItemDto>>(tasks);
     }

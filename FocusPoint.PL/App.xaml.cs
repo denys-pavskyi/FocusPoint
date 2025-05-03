@@ -72,7 +72,6 @@ namespace FocusPoint.PL
                     services.AddTransient<AuthView>();
                     services.AddTransient<SettingsView>();
 
-
                     // Other
 
                     var mapperConfig = new MapperConfiguration(mc =>

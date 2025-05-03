@@ -14,6 +14,7 @@ public class TasksViewModel: INotifyPropertyChanged
 {
     private readonly ITaskItemService _taskItemService;
     private readonly Guid _currentUserId;
+    private readonly bool? _isCompletedFilter;
 
     public ObservableCollection<TaskItemDto> Tasks { get; set; } = new();
 
@@ -31,28 +32,29 @@ public class TasksViewModel: INotifyPropertyChanged
     public ICommand AddTaskCommand => new RelayCommand(AddTask);
     public ICommand EditTaskCommand => new RelayCommand(EditTask, () => SelectedTask != null);
     public ICommand DeleteTaskCommand => new RelayCommand(DeleteTask, () => SelectedTask != null);
-    public ICommand MarkCompletedCommand => new RelayCommand(MarkSelectedTaskCompleted);
-
-    private async void MarkSelectedTaskCompleted()
+    public ICommand RefreshTasksCommand => new RelayCommand(async () => await LoadTasksAsync());
+    public ICommand MarkCompletedCommand => new RelayCommand<TaskItemDto>(async (task) =>
     {
-        if (SelectedTask is null) return;
+        if (task == null) return;
 
-        SelectedTask.IsCompleted = true;
-        await _taskItemService.UpdateAsync(SelectedTask);
-        Tasks.Remove(SelectedTask);
-    }
+        task.IsCompleted = true;
+        await _taskItemService.UpdateAsync(task);
+        Tasks.Remove(task);
+    });
 
-    public TasksViewModel(ITaskItemService taskItemService, Guid currentUserId)
+
+    public TasksViewModel(ITaskItemService taskItemService, Guid currentUserId, bool? isCompletedFilter = false)
     {
         _taskItemService = taskItemService;
         _currentUserId = currentUserId;
+        _isCompletedFilter = isCompletedFilter;
 
-        LoadTasks();
+        LoadTasksAsync();
     }
 
-    private void LoadTasks()
+    private async Task LoadTasksAsync()
     {
-        var tasks = _taskItemService.GetAllForUserAsync(_currentUserId);
+        var tasks = await _taskItemService.GetAllForUserAsync(_currentUserId, _isCompletedFilter);
 
         var sortedTasks = tasks
             .OrderByDescending(t => t.Priority) // High -> Mid -> Low

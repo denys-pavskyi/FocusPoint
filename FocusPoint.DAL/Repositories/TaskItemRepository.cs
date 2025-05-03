@@ -15,11 +15,21 @@ public class TaskItemRepository: ITaskItemRepository
     }
 
 
-    public IEnumerable<TaskItem> GetAllForUserAsync(Guid userId)
+    public async Task<IEnumerable<TaskItem>> GetAllForUserAsync(Guid userId, bool? isComplete = null)
     {
-        var tasks = _context.TaskItems.Where(ti => ti.UserId.Equals(userId));
+        IQueryable<TaskItem> tasks;
 
-        return tasks;
+        if (isComplete.HasValue)
+        {
+            tasks = _context.TaskItems.Where(ti => ti.UserId.Equals(userId) && ti.IsCompleted == isComplete);
+
+        }
+        else
+        {
+            tasks = _context.TaskItems.Where(ti => ti.UserId.Equals(userId));
+        }
+
+        return await tasks.AsNoTracking().ToListAsync();
     }
 
     public async Task AddAsync(TaskItem newTask)

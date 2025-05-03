@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using FocusPoint.PL.ViewModels;
 
 namespace FocusPoint.PL.Views
 {
@@ -20,6 +21,7 @@ namespace FocusPoint.PL.Views
     /// </summary>
     public partial class TasksView : UserControl
     {
+
         public TasksView()
         {
             InitializeComponent();

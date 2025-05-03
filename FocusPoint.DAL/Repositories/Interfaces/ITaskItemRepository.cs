@@ -4,7 +4,7 @@ namespace FocusPoint.DAL.Repositories.Interfaces;
 
 public interface ITaskItemRepository
 {
-    IEnumerable<TaskItem> GetAllForUserAsync(Guid userId);
+    Task<IEnumerable<TaskItem>> GetAllForUserAsync(Guid userId, bool? isComplete = null);
     Task AddAsync(TaskItem newTask);
     Task UpdateAsync(TaskItem updatedTask);
     Task<TaskItem?> GetByIdAsync(Guid taskId);
