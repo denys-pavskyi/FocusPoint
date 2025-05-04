@@ -11,6 +11,16 @@
     <UserControl.Resources>
         <other:NullToBoolConverter x:Key="NullToBoolConverter" />
         <other:PriorityToColorConverter x:Key="PriorityToColorConverter" />
+        <DropShadowEffect x:Key="ShadowEffect"
+                          BlurRadius="6"
+                          Direction="270"
+                          ShadowDepth="3"
+                          Opacity="0.3" />
+        <DropShadowEffect x:Key="ShadowEffect2"
+                          BlurRadius="4"
+                          Direction="270"
+                          ShadowDepth="2"
+                          Opacity="0.2"/>
     </UserControl.Resources>
     <Grid Margin="10">
         <Grid.RowDefinitions>
@@ -62,40 +72,96 @@
         </StackPanel>
 
         <!-- Tasks list -->
-        <ListBox Grid.Row="1" 
-                 ItemsSource="{Binding Tasks}" 
-                 SelectedItem="{Binding SelectedTask}"
-                 MouseDoubleClick="ListBox_MouseDoubleClick">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Border BorderBrush="#CCC" BorderThickness="1" Padding="10" Margin="5">
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                <CheckBox Content="Done"
-                                          IsChecked="{Binding IsCompleted, Mode=TwoWay}"
-                                          Command="{Binding DataContext.MarkCompletedCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                          CommandParameter="{Binding}" 
-                                          Margin="0,0,0,5"/>
-                            </StackPanel>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Height="450"  Foreground="DarkGray" 
+                      Background="LightCyan" >
+            <ListBox ItemsSource="{Binding Tasks}" 
+             SelectedItem="{Binding SelectedTask}"
+             Background="Transparent"
+             BorderThickness="0"
+             Padding="10"
+             MouseDoubleClick="ListBox_MouseDoubleClick" HorizontalAlignment="Center">
 
-                            <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="14"/>
-                            <TextBlock Text="{Binding Description}" FontSize="12" Foreground="Gray"/>
-                            <TextBlock Text="{Binding DueDate, StringFormat='Due: {0:MMM dd, yyyy}'}" FontSize="12" Foreground="Gray"/>
-                            <TextBlock Text="{Binding Priority}" 
-                                       FontSize="12" 
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="0 0 0 15"
+                        Padding="15"
+                        Width="500px"
+                        CornerRadius="12"
+                        BorderThickness="1"
+                        BorderBrush="{Binding Priority, Converter={StaticResource PriorityToColorConverter}}"
+                        Background="White"
+                        Effect="{StaticResource ShadowEffect}">
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Title}"
+                                       FontWeight="Bold"
+                                       FontSize="16"
+                                       Foreground="#333"
+                                       Margin="0,0,0,4"/>
+
+                                    <TextBlock Text="{Binding Description}"
+                                       TextWrapping="Wrap"
+                                       Height="50px"
+                                       FontSize="13"
+                                       Foreground="#666"
+                                       Margin="0,0,0,6"/>
+
+                                    <TextBlock Text="{Binding DueDate, StringFormat='📅 Due: {0:MMM dd, yyyy}'}"
+                                       FontSize="12"
+                                       Foreground="#888"
+                                       Margin="0,0,0,4"/>
+
+                                    <TextBlock Text="{Binding Priority}"
+                                       FontSize="12"
+                                       FontWeight="Bold"
                                        Foreground="{Binding Priority, Converter={StaticResource PriorityToColorConverter}}"/>
-                        </StackPanel>
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
+                                </StackPanel>
 
-            <!-- Double-click handler -->
-            <ListBox.InputBindings>
-                <MouseBinding Gesture="LeftDoubleClick"
-                              Command="{Binding EditTaskCommand}"
-                              CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource Self}}"/>
-            </ListBox.InputBindings>
-        </ListBox>
+                                <!-- Done button -->
+                                <Button Grid.Row="1"
+                                Content="✔ Done"
+                                Command="{Binding DataContext.MarkCompletedCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                CommandParameter="{Binding}"
+                                Background="#E6E6E6"
+                                Foreground="#444"
+                                FontSize="12"
+                                Padding="6 2"
+                                BorderThickness="0"
+                                HorizontalAlignment="Center"
+                                Margin="0,10,0,0"
+                                Cursor="Hand">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="#E6E6E6"/>
+                                            <Setter Property="Foreground" Value="#444"/>
+                                            <Setter Property="FontWeight" Value="SemiBold"/>
+                                            <Setter Property="Cursor" Value="Hand"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#D0D0D0"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+                <ListBox.InputBindings>
+                    <MouseBinding Gesture="LeftDoubleClick"
+                          Command="{Binding EditTaskCommand}"
+                          CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource Self}}"/>
+                </ListBox.InputBindings>
+            </ListBox>
+        </ScrollViewer>
 
 
         <!-- Bottom panel -->
@@ -104,7 +170,7 @@
                    HorizontalAlignment="Center"
                    Foreground="Gray"
                    FontStyle="Italic"
-                   Margin="0,10,0,0"/>
+                   Margin="0,20,0,0"/>
 
 
     </Grid>
