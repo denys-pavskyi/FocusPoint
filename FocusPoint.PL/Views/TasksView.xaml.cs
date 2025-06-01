@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,9 @@ namespace FocusPoint.PL.Views
     public partial class TasksView : UserControl
     {
 
+        private TasksViewModel ViewModel => (TasksViewModel)DataContext;
+        private bool _showCompleted = false;
+
         public TasksView()
         {
             InitializeComponent();
@@ -34,5 +38,16 @@ namespace FocusPoint.PL.Views
                 vm.EditTaskCommand.Execute(null);
             }
         }
+
+        private async void OnActiveTasksSelected(object sender, RoutedEventArgs e)
+        {
+            await ViewModel.SetFilterAsync(false);
+        }
+
+        private async void OnCompletedTasksSelected(object sender, RoutedEventArgs e)
+        {
+            await ViewModel.SetFilterAsync(true);
+        }
+
     }
 }

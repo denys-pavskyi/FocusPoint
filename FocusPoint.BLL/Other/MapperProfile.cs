@@ -12,19 +12,15 @@ public class MapperProfile : Profile
         CreateMap<MainNote, MainNoteDto>()
             .ReverseMap();
 
-        // Mapping для TaskItem
         CreateMap<TaskItem, TaskItemDto>()
             .ReverseMap();
 
-        // Mapping для WorkSession
         CreateMap<WorkSession, WorkSessionDto>()
             .ReverseMap();
 
-        // Mapping для WorkStatistic
         CreateMap<WorkStatistic, WorkStatisticDto>()
             .ReverseMap();
 
-        // Mapping для SavedNote
         CreateMap<SavedNote, SavedNoteDto>()
             .ReverseMap();
 

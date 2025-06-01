@@ -14,7 +14,7 @@ public class TasksViewModel: INotifyPropertyChanged
 {
     private readonly ITaskItemService _taskItemService;
     private readonly Guid _currentUserId;
-    private readonly bool? _isCompletedFilter;
+    private bool? _isCompletedFilter = false;
 
     public ObservableCollection<TaskItemDto> Tasks { get; set; } = new();
 
@@ -42,12 +42,36 @@ public class TasksViewModel: INotifyPropertyChanged
         Tasks.Remove(task);
     });
 
+    public bool? IsCompletedFilter
+    {
+        get => _isCompletedFilter;
+        private set
+        {
+            if (_isCompletedFilter != value)
+            {
+                _isCompletedFilter = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsActiveSelected));
+                OnPropertyChanged(nameof(IsCompletedSelected));
+            }
+        }
+    }
 
-    public TasksViewModel(ITaskItemService taskItemService, Guid currentUserId, bool? isCompletedFilter = false)
+    public bool IsActiveSelected => IsCompletedFilter == false;
+    public bool IsCompletedSelected => IsCompletedFilter == true;
+
+
+    public ICommand SetCompletedFilterCommand => new RelayCommand<bool?>(async (filter) =>
+    {
+        IsCompletedFilter = filter;
+        await LoadTasksAsync();
+    });
+
+    public TasksViewModel(ITaskItemService taskItemService, Guid currentUserId)
     {
         _taskItemService = taskItemService;
         _currentUserId = currentUserId;
-        _isCompletedFilter = isCompletedFilter;
+        _isCompletedFilter = false;
 
         LoadTasksAsync();
     }
@@ -62,6 +86,15 @@ public class TasksViewModel: INotifyPropertyChanged
 
         Tasks = new ObservableCollection<TaskItemDto>(sortedTasks);
         OnPropertyChanged(nameof(Tasks));
+    }
+
+    public async Task SetFilterAsync(bool? isCompleted)
+    {
+        if (_isCompletedFilter == isCompleted)
+            return;
+
+        _isCompletedFilter = isCompleted;
+        await LoadTasksAsync();
     }
 
     private void AddTask()
