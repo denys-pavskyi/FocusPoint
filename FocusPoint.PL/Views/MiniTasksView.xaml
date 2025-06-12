@@ -1,0 +1,118 @@
+﻿<UserControl x:Class="FocusPoint.PL.Views.MiniTasksView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FocusPoint.PL.Views" 
+             xmlns:viewmodels="clr-namespace:FocusPoint.PL.ViewModels"
+             xmlns:converters="clr-namespace:FocusPoint.PL.Converters"
+             xmlns:other="clr-namespace:FocusPoint.PL.Other"
+             d:DataContext="{d:DesignInstance Type=viewmodels:TasksViewModel}"
+             mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <other:PriorityToColorConverter x:Key="PriorityToColorConverter"/>
+    </UserControl.Resources>
+
+    <StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0 0 0 5">
+            <TextBlock Text="Tasks" 
+                       FontSize="14" 
+                       FontWeight="Bold" 
+                       VerticalAlignment="Center"/>
+
+            <Button Content="Refresh" 
+                    Command="{Binding RefreshTasksCommand}" 
+                    Width="80"
+                    Height="20"
+                    Background="#2196F3"
+                    Foreground="White"
+                    FontSize="12"
+                    FontWeight="Bold"
+                    Margin="20 0 0 0"
+                    BorderThickness="0"
+                    Cursor="Hand"/>
+        </StackPanel>
+
+        <Border BorderBrush="#CCC" BorderThickness="1" CornerRadius="4" Background="White">
+            <ScrollViewer Height="140" VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding Tasks}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="5"
+                                    Padding="6"
+                                    CornerRadius="4"
+                                    BorderBrush="#CCC"
+                                    BorderThickness="1"
+                                    Background="White">
+                                <Grid VerticalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Title -->
+                                    <TextBlock Grid.Column="0"
+                                               Text="{Binding Title}"
+                                               FontWeight="SemiBold"
+                                               FontSize="12"
+                                               VerticalAlignment="Center"
+                                               TextTrimming="CharacterEllipsis"
+                                               Foreground="#333"
+                                               Margin="0 0 6 0"/>
+
+                                    <!-- Date -->
+                                    <TextBlock Grid.Column="1"
+                                               Text="{Binding DueDate, StringFormat='📅 {0:MMM dd}'}"
+                                               FontSize="11"
+                                               Foreground="Gray"
+                                               VerticalAlignment="Center"
+                                               Margin="0 0 6 0"/>
+
+                                    <!-- Priority -->
+                                    <TextBlock Grid.Column="2"
+                                               Text="{Binding Priority}"
+                                               FontSize="12"
+                                               FontWeight="Bold"
+                                               Foreground="{Binding Priority, Converter={StaticResource PriorityToColorConverter}}"
+                                               VerticalAlignment="Center"
+                                               Margin="0 0 6 0"/>
+
+                                    <!-- Done Button -->
+                                    <Button Grid.Column="3"
+                                            Content="✔"
+                                            Width="22"
+                                            Height="22"
+                                            FontSize="12"
+                                            Command="{Binding DataContext.ToggleCompletedCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"
+                                            Background="#E6E6E6"
+                                            Foreground="#444"
+                                            BorderThickness="0"
+                                            Cursor="Hand"
+                                            ToolTip="Mark as done"
+                                            VerticalAlignment="Center">
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Background" Value="#E6E6E6"/>
+                                                <Setter Property="Foreground" Value="#444"/>
+                                                <Setter Property="FontWeight" Value="Bold"/>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#D0D0D0"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                    </Button>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+    </StackPanel>
+</UserControl>

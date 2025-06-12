@@ -39,7 +39,7 @@
             <TabItem Header="Main">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="150px"/>
+                        <RowDefinition Height="200px"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
@@ -74,7 +74,7 @@
                                            Padding="10"
                                            DockPanel.Dock="Left"/>
 
-                                <!-- Простір заповнюється -->
+
                                 <StackPanel Width="100" DockPanel.Dock="Left"/>
 
                                 <Button Content="Add Time"
@@ -86,7 +86,7 @@
                                         Width="65px"/>
                             </DockPanel>
                             
-                            <StackPanel Grid.Row="1">
+                            <StackPanel Grid.Row="1" Margin="0 20 0 0">
                                 <ItemsControl ItemsSource="{Binding FocusBlocks}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
@@ -114,7 +114,7 @@
                                                     </ProgressBar.Resources>
                                                 </ProgressBar>
 
-                                                <TextBlock FontSize="14">
+                                                <TextBlock FontSize="12">
                                                     <Run Text="⏱ "/>
                                                     <Run Text="{Binding MinutesWorked}" FontWeight="Bold"/>
                                                     <Run Text=" / " Foreground="Gray"/>
@@ -135,14 +135,7 @@
 
                     <!-- Tasks Block -->
                     <Border Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" Background="#EDEDED" Padding="10" Margin="5">
-                        <StackPanel>
-                            <TextBlock Text="Tasks" FontSize="16" FontWeight="Bold"/>
-                            <ListBox>
-                                <ListBoxItem Content="Task 1"/>
-                                <ListBoxItem Content="Task 2"/>
-                                <ListBoxItem Content="Task 3"/>
-                            </ListBox>
-                        </StackPanel>
+                        <views:MiniTasksView DataContext="{Binding TasksViewModel}" />
                     </Border>
 
                     <!-- Main Notes Block -->
