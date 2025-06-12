@@ -14,7 +14,7 @@ public class TasksViewModel: INotifyPropertyChanged
 {
     private readonly ITaskItemService _taskItemService;
     private readonly Guid _currentUserId;
-    private bool? _isCompletedFilter = false;
+    private bool _isCompletedFilter = false;
 
     public ObservableCollection<TaskItemDto> Tasks { get; set; } = new();
 
@@ -33,11 +33,13 @@ public class TasksViewModel: INotifyPropertyChanged
     public ICommand EditTaskCommand => new RelayCommand(EditTask, () => SelectedTask != null);
     public ICommand DeleteTaskCommand => new RelayCommand(DeleteTask, () => SelectedTask != null);
     public ICommand RefreshTasksCommand => new RelayCommand(async () => await LoadTasksAsync());
-    public ICommand MarkCompletedCommand => new RelayCommand<TaskItemDto>(async (task) =>
+
+    public string ToggleCompletedButtonText => _isCompletedFilter ? "↩ Undone" : "✔ Done";
+    public ICommand ToggleCompletedCommand => new RelayCommand<TaskItemDto>(async (task) =>
     {
         if (task == null) return;
 
-        task.IsCompleted = true;
+        task.IsCompleted = !task.IsCompleted;
         await _taskItemService.UpdateAsync(task);
         Tasks.Remove(task);
     });
@@ -49,7 +51,7 @@ public class TasksViewModel: INotifyPropertyChanged
         {
             if (_isCompletedFilter != value)
             {
-                _isCompletedFilter = value;
+                _isCompletedFilter = value ?? false;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsActiveSelected));
                 OnPropertyChanged(nameof(IsCompletedSelected));
@@ -88,7 +90,7 @@ public class TasksViewModel: INotifyPropertyChanged
         OnPropertyChanged(nameof(Tasks));
     }
 
-    public async Task SetFilterAsync(bool? isCompleted)
+    public async Task SetFilterAsync(bool isCompleted)
     {
         if (_isCompletedFilter == isCompleted)
             return;
