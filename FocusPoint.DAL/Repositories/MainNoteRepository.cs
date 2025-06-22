@@ -36,14 +36,10 @@ public class MainNoteRepository : IMainNoteRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(Guid id)
+    public async Task DeleteAsync(MainNote mainNote)
     {
-        var mainNote = await _context.MainNotes.FindAsync(id);
-        if (mainNote != null)
-        {
-            _context.MainNotes.Remove(mainNote);
-            await _context.SaveChangesAsync();
-        }
+        _context.MainNotes.Remove(mainNote);
+        await _context.SaveChangesAsync();
     }
 
     public async Task<List<MainNote>> GetAllByUserIdOrdered(Guid userId)
@@ -55,4 +51,11 @@ public class MainNoteRepository : IMainNoteRepository
 
         return notes;
     }
+
+    public async Task UpdateManyAsync(IEnumerable<MainNote> notesToUpdate)
+    {
+        _context.MainNotes.UpdateRange(notesToUpdate);
+        await _context.SaveChangesAsync();
+    }
+
 }

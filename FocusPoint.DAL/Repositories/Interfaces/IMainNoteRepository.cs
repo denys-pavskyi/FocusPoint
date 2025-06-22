@@ -9,7 +9,7 @@ public interface IMainNoteRepository
     Task<MainNote?> GetByIdAsync(Guid id);
     Task AddAsync(MainNote mainNote);
     Task UpdateAsync(MainNote mainNote);
-    Task DeleteAsync(Guid id);
+    Task DeleteAsync(MainNote mainNote);
     Task<List<MainNote>> GetAllByUserIdOrdered(Guid userId);
     Task UpdateManyAsync(IEnumerable<MainNote> notesToUpdate);
 
