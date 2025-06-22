@@ -45,4 +45,14 @@ public class MainNoteRepository : IMainNoteRepository
             await _context.SaveChangesAsync();
         }
     }
+
+    public async Task<List<MainNote>> GetAllByUserIdOrdered(Guid userId)
+    {
+        var notes = await _context.MainNotes
+            .Where(mn => mn.UserId.Equals(userId))
+            .OrderBy(mn => mn.OrderIndex)
+            .ToListAsync();
+
+        return notes;
+    }
 }

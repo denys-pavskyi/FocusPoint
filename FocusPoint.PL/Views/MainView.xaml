@@ -7,7 +7,8 @@
         xmlns:views="clr-namespace:FocusPoint.PL.Views"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" xmlns:viewmodels="clr-namespace:FocusPoint.PL.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
         mc:Ignorable="d"
-        Title="MainView" Height="650" Width="900" WindowStartupLocation="CenterScreen">
+        Title="MainView" Height="650" Width="900" WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
     
     <Grid>
         <Grid.RowDefinitions>
@@ -40,7 +41,7 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="200px"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="4.5*"/>
@@ -134,16 +135,12 @@
                     
 
                     <!-- Tasks Block -->
-                    <Border Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" Background="#EDEDED" Padding="10" Margin="5">
+                    <Border Grid.Row="0" Grid.Column="1" Background="#EDEDED" Padding="10" Margin="5">
                         <views:MiniTasksView DataContext="{Binding TasksViewModel}" />
                     </Border>
 
                     <!-- Main Notes Block -->
-                    <Border Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0" Background="White" Padding="10" Margin="5">
-
-                            <TextBox AcceptsReturn="True" Height="400" TextWrapping="Wrap"/>
-                        
-                    </Border>
+                    <views:MainNotesView Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0"/>
                 </Grid>
             </TabItem>
 
