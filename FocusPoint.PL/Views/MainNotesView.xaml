@@ -84,7 +84,7 @@
         <!-- Save Button -->
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
             <Button Content="Save"
-                    Command="{Binding SaveNotesCommand}"
+                    Command="{Binding SaveCommand}"
                     Width="80"
                     Height="30"
                     Background="#4CAF50"

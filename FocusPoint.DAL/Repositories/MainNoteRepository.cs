@@ -47,6 +47,7 @@ public class MainNoteRepository : IMainNoteRepository
         var notes = await _context.MainNotes
             .Where(mn => mn.UserId.Equals(userId))
             .OrderBy(mn => mn.OrderIndex)
+            .AsNoTracking()
             .ToListAsync();
 
         return notes;
@@ -54,6 +55,15 @@ public class MainNoteRepository : IMainNoteRepository
 
     public async Task UpdateManyAsync(IEnumerable<MainNote> notesToUpdate)
     {
+        foreach (var mainNote in notesToUpdate)
+        {
+            var trackedEntity = _context.MainNotes.Local.FirstOrDefault(x => x.Id == mainNote.Id);
+            if (trackedEntity != null)
+            {
+                _context.Entry(trackedEntity).State = EntityState.Detached;
+            }
+        }
+
         _context.MainNotes.UpdateRange(notesToUpdate);
         await _context.SaveChangesAsync();
     }

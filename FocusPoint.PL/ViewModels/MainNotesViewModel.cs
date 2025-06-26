@@ -57,7 +57,15 @@ public class MainNotesViewModel : INotifyPropertyChanged
     private async Task LoadNotesAsync()
     {
         var notes = await _mainNoteService.GetAllByUserIdOrdered(_currentUserId);
+        
+
+        foreach (var mainNoteDto in notes)
+        {
+            mainNoteDto.AcceptChanges();
+        }
+
         Notes = new ObservableCollection<MainNoteDto>(notes);
+
         SelectedNote = Notes.FirstOrDefault();
         OnPropertyChanged(nameof(Notes));
     }
