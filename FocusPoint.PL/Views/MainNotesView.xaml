@@ -4,16 +4,94 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FocusPoint.PL.Views"
+             xmlns:viewModels="clr-namespace:FocusPoint.PL.ViewModels"
              mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=viewModels:MainNotesViewModel}"
              Height="300" Width="350">
 
-    <Border Background="White" Padding="10" Margin="5">
-        <TextBox AcceptsReturn="True"
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Notes tabs -->
+            <RowDefinition Height="*"/>
+            <!-- Text editor -->
+            <RowDefinition Height="Auto"/>
+            <!-- Buttons -->
+        </Grid.RowDefinitions>
+
+        <!-- Notes Tabs -->
+        <ListBox Grid.Row="0"
+                 ItemsSource="{Binding Notes}"
+                 SelectedItem="{Binding SelectedNote}"
+                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                 Background="Transparent"
+                 BorderThickness="0"
+                 Height="40"
+                 HorizontalContentAlignment="Stretch"
+                 ScrollViewer.VerticalScrollBarVisibility="Disabled">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="4 0"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <Border Background="{TemplateBinding Background}"
+                                        BorderBrush="Gray"
+                                        BorderThickness="1"
+                                        CornerRadius="5"
+                                        Padding="6 2">
+                                    <ContentPresenter />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#D0E8FF"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Title}"
+                               FontWeight="SemiBold"
+                               Foreground="#333"
+                               Padding="4 0"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <!-- Text Editor -->
+        <TextBox Grid.Row="1"
+                 Text="{Binding SelectedNote.Content, UpdateSourceTrigger=PropertyChanged}"
+                 AcceptsReturn="True"
                  TextWrapping="Wrap"
                  VerticalScrollBarVisibility="Auto"
+                 Margin="5"
                  BorderBrush="#CCC"
                  BorderThickness="1"
                  Background="#FAFAFA"
-                 MinHeight="280"/>
-    </Border>
+                 FontSize="14"
+                 Padding="8"/>
+
+        <!-- Save Button -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
+            <Button Content="Save"
+                    Command="{Binding SaveNotesCommand}"
+                    Width="80"
+                    Height="30"
+                    Background="#4CAF50"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    BorderThickness="0"
+                    Cursor="Hand"/>
+        </StackPanel>
+    </Grid>
 </UserControl>

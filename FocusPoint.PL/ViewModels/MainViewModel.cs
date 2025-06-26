@@ -1,5 +1,6 @@
 ﻿using FocusPoint.BLL.Interfaces;
 using FocusPoint.BLL.Models.DtoModels;
+using FocusPoint.BLL.Services;
 using FocusPoint.DAL.Entities;
 using FocusPoint.PL.Commands;
 using FocusPoint.PL.Views;
@@ -17,6 +18,7 @@ public class MainViewModel : INotifyPropertyChanged
     private readonly IUserService _userService;
     private readonly IWorkSessionService _workSessionService;
     private readonly ITaskItemService _taskItemService;
+    private readonly IMainNoteService _mainNoteService;
     public event PropertyChangedEventHandler? PropertyChanged;
     private UserDto? _currentUser;
     int _minutesWorked;
@@ -78,6 +80,17 @@ public class MainViewModel : INotifyPropertyChanged
         }
     }
 
+    private MainNotesViewModel _mainNotesViewModel;
+    public MainNotesViewModel MainNotesViewModel
+    {
+        get => _mainNotesViewModel;
+        set
+        {
+            _mainNotesViewModel = value;
+            OnPropertyChanged(nameof(MainNotesViewModel));
+        }
+    }
+
 
     private int _selectedTabIndex;
     public int SelectedTabIndex
@@ -105,7 +118,8 @@ public class MainViewModel : INotifyPropertyChanged
     }
 
     public MainViewModel(IUserService userService, IWorkSessionService workSession,
-        ITaskItemService taskItemService, UserDto user = null)
+        ITaskItemService taskItemService, UserDto user = null,
+        IMainNoteService mainNoteService = null)
     {
 
         _timer = new DispatcherTimer
@@ -118,7 +132,7 @@ public class MainViewModel : INotifyPropertyChanged
         _userService = userService;
         _workSessionService = workSession;
         _taskItemService = taskItemService;
-
+        _mainNoteService = mainNoteService;
     }
 
     public async Task InitializeAsync()
@@ -132,6 +146,7 @@ public class MainViewModel : INotifyPropertyChanged
 
             SettingsViewModel = new SettingsViewModel(CurrentUser, _userService);
             TasksViewModel = new TasksViewModel(_taskItemService, _currentUser.Id);
+            MainNotesViewModel = new MainNotesViewModel(_mainNoteService, _currentUser.Id);
         }
     }
 

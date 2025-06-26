@@ -140,7 +140,7 @@
                     </Border>
 
                     <!-- Main Notes Block -->
-                    <views:MainNotesView Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0"/>
+                    <views:MainNotesView DataContext="{Binding MainNotesViewModel}"  Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0"/>
                 </Grid>
             </TabItem>
 
