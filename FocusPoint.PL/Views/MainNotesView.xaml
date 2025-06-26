@@ -14,6 +14,6 @@
                  BorderBrush="#CCC"
                  BorderThickness="1"
                  Background="#FAFAFA"
-                 MinHeight="300" MaxHeight="350"/>
+                 MinHeight="280"/>
     </Border>
 </UserControl>
