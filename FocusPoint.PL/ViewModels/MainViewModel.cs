@@ -36,6 +36,21 @@ public class MainViewModel : INotifyPropertyChanged
         }
     }
 
+    private bool _useInternalTimer;
+    public bool UseInternalTimer
+    {
+        get => _useInternalTimer;
+        set
+        {
+            if (_useInternalTimer != value)
+            {
+                _useInternalTimer = value;
+                OnPropertyChanged(nameof(UseInternalTimer));
+            }
+        }
+    }
+
+
     // Timer
 
     private DispatcherTimer _timer;
@@ -65,6 +80,7 @@ public class MainViewModel : INotifyPropertyChanged
         set
         {
             _settingsViewModel = value;
+            UseInternalTimer = _settingsViewModel?.CurrentUser?.UserSetting?.UseInternalTimer ?? false;
             OnPropertyChanged(nameof(SettingsViewModel));
         }
     }
@@ -155,6 +171,7 @@ public class MainViewModel : INotifyPropertyChanged
         if (CurrentUser?.UserSetting is not null)
         {
             LoadFocusBlocks(CurrentUser.UserSetting.WorkBlocks, CurrentUser.UserSetting.FocusInterval);
+            UseInternalTimer = CurrentUser.UserSetting.UseInternalTimer;
             UpdateFocusBlocks(_minutesWorked);
         }
     }

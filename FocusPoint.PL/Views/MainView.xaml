@@ -9,7 +9,10 @@
         mc:Ignorable="d"
         Title="MainView" Height="650" Width="900" WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize">
-    
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50px"/>
@@ -23,8 +26,8 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Save Button with left margin -->
-            <Button x:Name="SaveButton" Grid.Column="0" Content="💾" Width="40" Height="40" ToolTip="Save" Margin="10,0,0,0"/>
+            <!-- Save Button with left margin 
+            <Button x:Name="SaveButton" Grid.Column="0" Content="💾" Width="40" Height="40" ToolTip="Save" Margin="10,0,0,0"/>-->
 
             <!-- StackPanel with user info and Open Saved Notes button -->
             <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center">
@@ -66,14 +69,16 @@
                                         Foreground="White"
                                         Padding="5"
                                         Command="{Binding ToggleTimerCommand}"
-                                        DockPanel.Dock="Left"/>
+                                        DockPanel.Dock="Left"
+                                        Visibility="{Binding UseInternalTimer, Converter={StaticResource BoolToVis}}"/>
 
                                 <TextBlock x:Name="TimerDisplay"
                                            Text="{Binding ElapsedTime, StringFormat={}{0:mm\\:ss}}"
                                            FontSize="16"
                                            VerticalAlignment="Center"
                                            Padding="10"
-                                           DockPanel.Dock="Left"/>
+                                           DockPanel.Dock="Left"
+                                           Visibility="{Binding UseInternalTimer, Converter={StaticResource BoolToVis}}"/>
 
 
                                 <StackPanel Width="100" DockPanel.Dock="Left"/>
